@@ -3,8 +3,8 @@
 reproduce.py — Single-Entry Reproduction Harness for willow-decoder-s1
 
 Strictly executes the registered audit protocol defined in PREREGISTRATION.md:
-  G0: Provenance & integrity
-  G1: Dynamic population derivation (P1: N_Libra)
+  G0: Provenance & integrity (data_manifest.json, SHA-256 bitstream validation)
+  G1: Dynamic population derivation (P1: N_Libra = 364)
   G2: Target B Scope Finding (case-insensitive neural/weight artifact search)
   G3: Deterministic reproduction (Targets A1 & A2: eps_7, Lambda)
 """
@@ -14,6 +14,8 @@ import sys
 import json
 import hashlib
 import argparse
+import subprocess
+from datetime import datetime, timezone
 import numpy as np
 
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -26,6 +28,83 @@ TOL_EPS_7_R1 = 0.005e-3  # Half-unit rule on second displayed decimal in 10^-3 (
 
 PUB_LAMBDA = 2.04
 TOL_LAMBDA_R1 = 0.005    # Half-unit rule on second displayed decimal (0.01 / 2)
+
+IMMUTABLE_INPUT_FILES = [
+    "PREREGISTRATION.md",
+    "reproduce.py",
+    "requirements-minimal.txt",
+    "data_manifest.json"
+]
+
+
+def verify_environment(instance_dir, expected_prereg_sha=None):
+    """
+    Verifies git working tree cleanliness and captures dynamic commit SHA.
+    Enforces EXECUTION_STATE_INVALID halt if preconditions fail.
+    """
+    try:
+        res_status = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=instance_dir,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        if res_status.stdout.strip():
+            sys.stderr.write(f"FATAL [EXECUTION_STATE_INVALID]: Working tree is not clean:\n{res_status.stdout}\n")
+            sys.exit(1)
+
+        res_sha = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=instance_dir,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        actual_sha = res_sha.stdout.strip()
+
+        if expected_prereg_sha and actual_sha != expected_prereg_sha:
+            sys.stderr.write(
+                f"FATAL [EXECUTION_STATE_INVALID]: git rev-parse HEAD ({actual_sha}) != expected PREREG_SHA ({expected_prereg_sha})\n"
+            )
+            sys.exit(1)
+
+        return actual_sha
+    except Exception as e:
+        sys.stderr.write(f"FATAL [EXECUTION_STATE_INVALID]: Failed git environment check: {e}\n")
+        sys.exit(1)
+
+
+def record_immutable_inputs(instance_dir, run_dir):
+    """Computes and records SHA-256 for all immutable protocol inputs."""
+    records = []
+    for fname in IMMUTABLE_INPUT_FILES:
+        fpath = os.path.join(instance_dir, fname)
+        if not os.path.exists(fpath):
+            sys.stderr.write(f"FATAL [EXECUTION_STATE_INVALID]: Immutable input missing: {fname}\n")
+            sys.exit(1)
+        with open(fpath, "rb") as fp:
+            h = hashlib.sha256(fp.read()).hexdigest()
+        records.append(f"{h}  {fname}")
+    with open(os.path.join(run_dir, "inputs.sha256"), "w") as fp:
+        fp.write("\n".join(records) + "\n")
+
+
+def save_outputs_sha256(run_dir):
+    """Computes SHA-256 for all produced artifacts in the run directory."""
+    out_hashes = []
+    for root, _, files in os.walk(run_dir):
+        for f in sorted(files):
+            if f == 'outputs.sha256':
+                continue
+            fpath = os.path.join(root, f)
+            relpath = os.path.relpath(fpath, run_dir)
+            with open(fpath, 'rb') as fp:
+                h = hashlib.sha256(fp.read()).hexdigest()
+            out_hashes.append(f"{h}  {relpath}")
+
+    with open(os.path.join(run_dir, "outputs.sha256"), "w") as fp:
+        fp.write("\n".join(out_hashes) + "\n")
 
 
 def halt(gate: str, reason: str):
@@ -53,7 +132,6 @@ def gate_1_population(manifest: dict):
     libra_roots = set()
     for key in manifest.keys():
         if "libra_predicted.b8" in key or "libra_decoder_with_rl_optimized_prior" in key:
-            # Key format: <patch>/<basis>/<round>/...
             parts = key.split("/")
             if len(parts) >= 3:
                 root = f"{parts[0]}/{parts[1]}/{parts[2]}"
@@ -249,15 +327,19 @@ def run_g3_recomputation(data_root: str, roots: list):
     }
 
 
-def main():
-    parser = argparse.ArgumentParser(description="willow-decoder-s1 Reproduction Harness")
-    parser.add_argument("--quiet", action="store_true", help="Suppress stdout output")
-    args = parser.parse_args()
+def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
+    os.makedirs(run_dir, exist_ok=True)
+    record_immutable_inputs(instance_dir, run_dir)
 
-    manifest_path = os.path.join(REPO_ROOT, "data_manifest.json")
-    data_root = os.path.join(REPO_ROOT, "data")
-    results_dir = os.path.join(REPO_ROOT, "results")
-    os.makedirs(results_dir, exist_ok=True)
+    with open(os.path.join(run_dir, "git_commit.txt"), "w") as f:
+        f.write(f"{prereg_sha}\n")
+
+    t_run_start = datetime.now(timezone.utc).isoformat()
+
+    manifest_path = os.path.join(instance_dir, "data_manifest.json")
+    data_root = os.path.join(instance_dir, "data")
+    legacy_results_dir = os.path.join(instance_dir, "results")
+    os.makedirs(legacy_results_dir, exist_ok=True)
 
     # G0: Provenance & integrity
     manifest = gate_0_provenance(manifest_path)
@@ -265,7 +347,9 @@ def main():
     # Save manifest SHA-256 digest
     with open(manifest_path, "rb") as f:
         manifest_sha = hashlib.sha256(f.read()).hexdigest()
-    with open(os.path.join(results_dir, "manifest.sha256"), "w") as f:
+    with open(os.path.join(run_dir, "manifest.sha256"), "w") as f:
+        f.write(f"{manifest_sha}  data_manifest.json\n")
+    with open(os.path.join(legacy_results_dir, "manifest.sha256"), "w") as f:
         f.write(f"{manifest_sha}  data_manifest.json\n")
 
     # G1: Dynamic population derivation (P1)
@@ -281,11 +365,17 @@ def main():
     # G3: Reproduction (Target A1 & Target A2)
     results = run_g3_recomputation(data_root, derived_roots)
 
+    t_run_end = datetime.now(timezone.utc).isoformat()
+
     summary = {
+        "run_id": run_id,
+        "prereg_sha": prereg_sha,
         "audit_object": "Willow Surface-Code Decoding Dataset (Zenodo 10.5281/zenodo.13273331)",
         "archive_md5": ARCHIVE_PINNED_MD5,
         "dataset_doi": DATASET_DOI,
         "manifest_sha256": manifest_sha,
+        "t_run_start_utc": t_run_start,
+        "t_run_end_utc": t_run_end,
         "gates": {
             "G0_provenance": "PASSED",
             "G1_population": {
@@ -335,21 +425,67 @@ def main():
         "detailed_patch_fits": results["detailed_fits"]
     }
 
-    out_path = os.path.join(results_dir, "summary.json")
+    out_path = os.path.join(run_dir, "summary.json")
     with open(out_path, "w") as f:
         json.dump(summary, f, indent=2, sort_keys=True)
 
-    if not args.quiet:
+    with open(os.path.join(legacy_results_dir, "summary.json"), "w") as f:
+        json.dump(summary, f, indent=2, sort_keys=True)
+
+    run_metadata = {
+        "run_id": run_id,
+        "prereg_sha": prereg_sha,
+        "repository": "VolMax-Studio/willow-decoder-s1",
+        "branch": "instances/willow-decoder-s1",
+        "t_run_start_utc": t_run_start,
+        "t_run_end_utc": t_run_end,
+        "dataset_doi": DATASET_DOI,
+        "archive_md5": ARCHIVE_PINNED_MD5,
+        "manifest_sha256": manifest_sha,
+        "exit_code": 0
+    }
+    with open(os.path.join(run_dir, "run_metadata.json"), "w") as f:
+        json.dump(run_metadata, f, indent=2)
+
+    with open(os.path.join(run_dir, "exit_code.txt"), "w") as f:
+        f.write("0\n")
+
+    save_outputs_sha256(run_dir)
+
+    if not quiet:
         print("================================================================================")
-        print("willow-decoder-s1 — AUDIT EXECUTION SUMMARY")
+        print(f"willow-decoder-s1 — AUDIT EXECUTION SUMMARY ({run_id})")
         print("================================================================================")
+        print(f"PREREG_SHA:                {prereg_sha}")
         print(f"G0 Provenance:             PASSED (Zenodo {DATASET_DOI})")
         print(f"G1 Population (P1):        PASSED (N_Libra = {n_libra} derived dynamically)")
         print(f"G2 Target B Scope:         PASSED (0 matching artifacts -> ABSENCE FROM DEPOSIT)")
         print(f"G3 Target A1 (eps_7):      {results['mean_eps'][7]*1e3:.4f}e-3 vs {PUB_EPS_7*1e3:.2f}e-3 [|Δ|={results['diff_eps_7']:.2e} <= {TOL_EPS_7_R1:.2e}] -> VERIFIED")
         print(f"G3 Target A2 (Lambda):     {results['Lambda']:.4f} vs {PUB_LAMBDA:.2f} [|Δ|={results['diff_lambda']:.4f} <= {TOL_LAMBDA_R1:.4f}] -> VERIFIED")
         print("================================================================================")
-        print(f"Artifacts generated:\n  - {out_path}\n  - {os.path.join(results_dir, 'manifest.sha256')}")
+        print(f"Artifacts written to {run_dir}")
+
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description="willow-decoder-s1 Official Reproduction Harness")
+    parser.add_argument("--run-id", default="run-002-confirmatory", help="Official Run ID")
+    parser.add_argument("--prereg-sha", default=None, help="Expected governing PREREG_SHA")
+    parser.add_argument("--skip-git-check", action="store_true", help="Skip git environment checks (dry run only)")
+    parser.add_argument("--quiet", action="store_true", help="Suppress verbose stdout output")
+    args = parser.parse_args()
+
+    instance_dir = REPO_ROOT
+    run_dir = os.path.join(instance_dir, "evidence", "runs", args.run_id)
+
+    if not args.skip_git_check:
+        actual_sha = verify_environment(instance_dir, expected_prereg_sha=args.prereg_sha)
+    else:
+        actual_sha = args.prereg_sha or "unverified_dry_run"
+
+    code = execute_run(instance_dir, run_dir, args.run_id, actual_sha, quiet=args.quiet)
+    sys.exit(code)
 
 
 if __name__ == "__main__":
