@@ -1,119 +1,340 @@
 # willow-decoder-s1
 
-**Independent Computational Audit and Deposited-Artifact Scope Finding for the Google Willow Surface-Code Decoding Dataset**
+## Independent reproduction audit of Google Willow public decoding artifacts
 
-[![Instance Verdict: Verified with Limitations](https://img.shields.io/badge/P10%20Verdict-Verified%20with%20Limitations-brightgreen)](#ratified-audit-results)
-[![Process State: Ratified](https://img.shields.io/badge/Process%20State-Ratified-blue)](#governance--ratification)
-[![Dataset: Zenodo 10.5281/zenodo.13273331](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.13273331-blue)](https://doi.org/10.5281/zenodo.13273331)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+**P10 Instance Verdict:** `VERIFIED WITH LIMITATIONS`  
+**Process State:** `RATIFIED`  
+**Final Run:** `run-003-recreation`  
+**Public Source:** Zenodo [`10.5281/zenodo.13273331`](https://doi.org/10.5281/zenodo.13273331)
 
----
-
-## 1. Executive Summary & Ratified Results
-
-This repository contains the frozen reproduction harness, cryptographic lineage manifests, and literal execution evidence for the independent computational audit of Google Quantum AI's public surface-code error correction dataset (Zenodo [`10.5281/zenodo.13273331`](https://doi.org/10.5281/zenodo.13273331), MD5: `21fa6ad35b395d838ebcdbc92e364a12`).
-
-### Ratified Target Dispositions (`run-003-recreation`)
-
-| Target | Claim Under Test | Nature (2025) Reference | Reconstructed Value (`run-003`) | Preregistered Acceptance Prag ($R_1$) | Absolute Difference ($|\Delta|$) | Controlled P10 Verdict |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Target A1** | Libra Matching-Family $\varepsilon_7$ | $1.71 \times 10^{-3}$ | **$1.7113465 \times 10^{-3}$** | $|\Delta| \le 0.005 \times 10^{-3}$ | **$1.35 \times 10^{-6}$** | **`Verified`** |
-| **Target A2** | Libra Matching-Family $\Lambda$ | $2.04$ | **$2.038282$** | $|\Delta| \le 0.0050$ | **$0.0017$** | **`Verified`** |
-| **Target B** | Neural Headline Scope Boundary | $0.143\%$ / $\Lambda = 2.14$ | **0 matching token paths** across 9,959 members | Token pre-registered inventory | `0` matching paths | **`Not Demonstrated from Deposited Artifact Alone`** |
-
-**Instance Aggregate Verdict:** **`Verified with Limitations`** (Ratified by Operator on 2026-09-05).
+> **Two published Libra matching-family quantities were independently reconstructed from the deposited raw bitstreams within preregistered tolerances.**
+>
+> The separate neural-decoder headline could not be reconstructed from the deposited artifact alone.
 
 ---
 
-## 2. Deposited-Artifact Scope Boundary & §15 Non-Inference Rule
+## Audit at a glance
 
-> [!IMPORTANT]
-> **Scope Limitation & Non-Inference Invariant (§15):**
-> 1. **Matching-Family Positive Reproduction:** The positive numerical reproduction applies strictly and specifically to the deposited **Libra matching-family** decoder results ($\Lambda = 2.0383$, $\varepsilon_7 = 1.7113 \times 10^{-3}$).
-> 2. **No Conflation:** The reproduced matching-family exponent $\Lambda = 2.0383$ must not be conflated with the separate neural-network decoder headline claim ($\Lambda = 2.14$, $0.143\%$).
-> 3. **Absence from Deposited Artifact Alone:** All 9,959 members in the Zenodo deposit were systematically evaluated. Zero paths match the preregistered tokens `neural`, `weight`, `weights` (5 matching-family/harmony pipelines identified). This establishes strictly that:
->    $$\text{Reconstruction of the neural headline is }\mathbf{NOT\ DEMONSTRATED\ FROM\ DEPOSITED\ ARTIFACT\ ALONE}$$
->    This finding **does not** imply that Google's headline claim is false, that neural decoding was not experimentally performed, or that neural decoder weights do not exist outside the public archive.
-
----
-
-## 3. Provenance & Measured Byte Accounting
-
-The audit establishes complete mathematical and cryptographic transparency over the processed bitstreams:
-
-- **1:1 Member Bijection (`SOURCE_MAPPING.json`):** All 728 local bitstreams in `data/` match original archive CRC32 checksums and manifest SHA-256 digests with 0 unmapped and 0 ambiguous entries.
-- **Population Invariant ($N_{\text{Libra}} = 364$):** Dynamically derived from the 728 paired bitstreams ($364 \times \text{obs\_flips\_actual.b8}$ and $364 \times \text{libra\_predicted.b8}$) across 14 patches, 2 bases ($X, Z$), and 13 primary rounds ($r \in [10, 250]$).
-- **Per-File Shot Invariant:** Every evaluated `.b8` file contains exactly **$50,000$ bytes** ($1$ byte per shot for $N_{\text{shots}} = 50,000$).
-- **Measured Byte Accounting (`bytes_read.json`):**
-  - Unique input dataset: **728 files** $\times$ 50,000 B = **$36,400,000$ bytes (34.71 MB)**.
-  - Integrity pass: 728 read operations ($36,400,000$ B).
-  - G3 Computation pass: 728 read operations ($36,400,000$ B).
-  - Total application reads: **1,456 operations ($72,800,000$ bytes / 69.43 MB)**.
+| Evidence | Measured |
+| :--- | ---: |
+| Complete Zenodo archive inventory | **9,959 members** |
+| Source bitstreams cryptographically mapped | **728 / 728** |
+| Experimental configurations derived | **364** |
+| Bytes in unique evaluated input set | **36,400,000 B** |
+| Total application bytes read | **72,800,000 B** |
+| File read operations | **1,456** |
+| Shot population per bitstream | **50,000** |
+| Scientific recreation parity | **10 / 10 fields SAME** |
+| Final evidence run exit code | **0** |
 
 ---
 
-## 4. Exact Frozen Weighting Model (WLS)
+# Ratified results
 
-1. **Per-Round Decay Fit (`fit_decay`):**
-   $$P_L(r) = \frac{1}{N_{\text{shots}}} \sum_{i=1}^{N_{\text{shots}}} (\text{actual}_i \oplus \text{predicted}_i)$$
-   $$w_i = \frac{N_{\text{shots}} (1 - 2p)^2}{4 p (1 - p)}, \quad p = \text{clip}(P_L(r), 10^{-7}, 0.499999)$$
-2. **Threshold Scaling Fit (`fit_lambda`):**
-   $$w_d = \left(\frac{\bar{\varepsilon}_d}{\sigma_{\bar{\varepsilon}_d}}\right)^2, \quad x = \frac{d}{2}, \quad y = \ln(\bar{\varepsilon}_d)$$
+| Target | Published | Reconstructed | Absolute $\Delta$ | Preregistered limit | Margin used | Verdict |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| **A1 · Libra $\varepsilon_7$** | `1.7100 × 10⁻³` | **`1.7113465 × 10⁻³`** | `1.35 × 10⁻⁶` | `5.00 × 10⁻⁶` | **27%** | ✅ **VERIFIED** |
+| **A2 · Libra $\Lambda$** | `2.0400` | **`2.038282`** | `0.0017` | `0.0050` | **34%** | ✅ **VERIFIED** |
+| **B · Neural scope** | `0.143% / Λ=2.14` headline | no reconstruction path established | — | archive inventory boundary | — | ⚠️ **NOT DEMONSTRATED FROM DEPOSITED ARTIFACT ALONE** |
 
----
+### Acceptance-margin view
 
-## 5. Replication & Verification Instructions
-
-### Requirements
-- Python $\ge 3.10$
-- `numpy >= 1.26.0`
-
-### Execution
-```bash
-# Install dependencies
-pip install -r requirements-minimal.txt
-
-# Run official execution wrapper under frozen PREREG_SHA
-./runner.sh run-003-recreation 6daa877b181aa6ca09900589218eac2d1e8a5282
-```
-
----
-
-## 6. Governance & Evidence Structure
+![Reproduction margin](docs/willow_tolerance_margin.svg)
 
 ```text
-willow-decoder-s1/
-├── PREREGISTRATION.md       # Pre-analysis specification v4
-├── reproduce.py             # Single-entry reproduction harness
-├── runner.sh                # Execution wrapper with log capture
-├── SOURCE_MAPPING.json      # 728-entry 1:1 bijection to Zenodo archive
-├── archive_inventory.json   # 9,959-member complete archive directory
-├── data_manifest.json       # Pinned SHA-256 digests for local bitstreams
-├── LICENSE_L0.md            # Provenance and MD5 vs SHA-256 distinctions
-├── FAILURES.md              # Historical failures log (#001 to #004)
-├── STATUS.md                # Lifecycle status (Ratified)
-├── PROJECT_HANDOFF.md       # Final project handoff
-└── evidence/runs/run-003-recreation/
-    ├── command.sh           # Literal executed command
-    ├── stdout.log           # Captured literal stdout
-    ├── stderr.log           # Captured literal stderr
-    ├── exit_code.txt        # Execution exit code (0)
-    ├── env.txt              # Execution environment details
-    ├── git_commit.txt       # Measured git HEAD SHA
-    ├── inputs.sha256        # Hashes of 7 immutable input files
-    ├── outputs.sha256       # Hashes of all produced run artifacts
-    ├── bytes_read.json      # Two-pass byte accounting telemetry
-    ├── recreation_comparison.json # Parity comparison against run-002
-    └── summary.json         # Structured machine-readable results
+Preregistered tolerance                              FAIL
+0%                                                    100%
+│                                                       │
+A1 ε₇     █████████████▌                                │ 27%
+A2 Λ      █████████████████                             │ 34%
+│                                                       │
+└──────────── both reproduced well inside R₁ ───────────┘
+```
+
+The reference values were used **only after recomputation** for the preregistered comparison step. They were not inputs to the estimator or WLS fit.
+
+---
+
+# Evidence chain
+
+```mermaid
+flowchart LR
+    Z["Zenodo archive<br/>9,959 members"] --> I["Full archive inventory"]
+
+    I --> M["728 mapped bitstreams"]
+    H["CRC32 + SHA-256<br/>728 / 728 verified"]
+    M --> H
+
+    P["364 experimental<br/>configurations"]
+    H --> P
+
+    X["Raw actual ⊕ predicted<br/>50,000 shots each"]
+    P --> X
+
+    W["Frozen WLS model"]
+    X --> W
+
+    E["ε₇ = 1.7113465 × 10⁻³"]
+    L["Λ = 2.038282"]
+    W --> E
+    W --> L
+
+    V1["VERIFIED"]
+    V2["VERIFIED"]
+    E --> V1
+    L --> V2
+
+    B["Full path-token scope test<br/>neural · weight · weights"]
+    I --> B
+    N["0 matching paths"]
+    B --> N
+    ND["Neural headline:<br/>NOT DEMONSTRATED<br/>FROM DEPOSIT ALONE"]
+    N --> ND
 ```
 
 ---
 
-## 7. Citation & Attribution
+# What exactly was reproduced?
 
-```text
-Google Quantum AI (2024), Data for "Quantum error correction below the surface code threshold", Zenodo, DOI 10.5281/zenodo.13273331, CC BY 4.0
+The positive result applies to the deposited **Libra matching-family decoder**.
+
+### Target A1 — logical error rate
+
+Published:
+$$\varepsilon_7 = 1.71\times10^{-3}$$
+
+Reconstructed from the deposited bitstreams:
+$$\boxed{\varepsilon_7 = 1.7113465352358304\times10^{-3}}$$
+
+with
+$$|\Delta| = 1.35\times10^{-6}$$
+
+against the preregistered acceptance boundary
+$$|\Delta| \le 5.00\times10^{-6}.$$
+
+**Disposition: `Verified`.**
+
+---
+
+### Target A2 — scaling exponent
+
+Published:
+$$\Lambda = 2.04$$
+
+Reconstructed:
+$$\boxed{\Lambda = 2.038282091967165}$$
+
+with
+$$|\Delta| = 0.0017$$
+
+against
+$$|\Delta| \le 0.0050.$$
+
+**Disposition: `Verified`.**
+
+---
+
+# What was *not* verified?
+
+```mermaid
+flowchart TD
+    A["Complete deposited archive<br/>9,959 members"] --> S["Search all member paths"]
+
+    S --> T1["neural"]
+    S --> T2["weight"]
+    S --> T3["weights"]
+
+    T1 --> Z["0 matches"]
+    T2 --> Z
+    T3 --> Z
+
+    F["NO EXPLICIT NEURAL PIPELINE OR<br/>WEIGHT ARTIFACT IDENTIFIED<br/>IN ARCHIVE INVENTORY"]
+    Z --> F
+
+    B["Neural-headline reconstruction<br/>NOT DEMONSTRATED FROM<br/>DEPOSITED ARTIFACT ALONE"]
+    F --> B
+
+    X["≠ Google claim is false<br/>≠ neural decoder did not exist<br/>≠ weights do not exist elsewhere"]
+    B --> X
 ```
 
-Primary Paper:
-> Google Quantum AI and Collaborators. *Quantum error correction below the surface code threshold.* Nature 638, 920–926 (2025). DOI: [10.1038/s41586-024-08449-y](https://doi.org/10.1038/s41586-024-08449-y).
+The inventory test establishes exactly this:
+
+> **Zero archive paths among 9,959 deposited members contain the preregistered case-insensitive tokens `neural`, `weight`, or `weights`.**
+
+It does **not** establish that the archive contains no neural decoder under some non-explicit naming scheme.
+
+It does **not** establish that Google's neural result is false.
+
+And the reproduced Libra value
+$$\Lambda = 2.0383$$
+must not be conflated with the separate neural-decoder headline value
+$$\Lambda = 2.14.$$
+
+---
+
+# From raw bytes to verdict
+
+```mermaid
+flowchart LR
+    A["Public artifact"] --> G0["G0<br/>Provenance"]
+    G0 --> G1["G1<br/>Population"]
+    G1 --> G2["G2<br/>Archive scope"]
+    G2 --> G3["G3<br/>Numerical reproduction"]
+
+    P0["PASS"]
+    P1["PASS"]
+    P2["BOUNDARY"]
+    P3["VERIFIED"]
+    P4["VERIFIED"]
+
+    G0 -->|"728/728"| P0
+    G1 -->|"N = 364"| P1
+    G2 -->|"9,959 inspected"| P2
+    G3 -->|"ε₇"| P3
+    G3 -->|"Λ"| P4
+
+    R["P10"]
+    P0 --> R
+    P1 --> R
+    P2 --> R
+    P3 --> R
+    P4 --> R
+
+    F["VERIFIED<br/>WITH LIMITATIONS"]
+    R --> F
+```
+
+---
+
+# Deterministic recreation
+
+The original `run-002-confirmatory` produced the same scientific values but lacked the complete command-bound evidence package.
+
+It was **not repaired or overwritten**.
+
+A separate frozen `run-003-recreation` was executed.
+
+| Recreation field | Result |
+| :--- | :--- |
+| `N_Libra` | `SAME` |
+| `ε₃` | `SAME` |
+| `ε₅` | `SAME` |
+| `ε₇` | `SAME` |
+| `Λ` | `SAME` |
+| Target A1 disposition | `SAME` |
+| Target A2 disposition | `SAME` |
+| Target B disposition | `SAME` |
+| experiment count | `SAME` |
+| series count | `SAME` |
+
+**Scientific parity: `10 / 10 SAME`.**
+
+---
+
+# Frozen numerical model
+
+### Per-round logical error
+
+$$P_L(r) = \frac{1}{N_{\text{shots}}} \sum_i (\text{actual}_i \oplus \text{predicted}_i)$$
+
+with
+$$N_{\text{shots}} = 50,000.$$
+
+For the frozen WLS:
+$$p = \operatorname{clip}(P_L, 10^{-7}, 0.499999)$$
+$$w_i = \frac{N_{\text{shots}}(1-2p)^2}{4p(1-p)}.$$
+
+### Scaling fit
+
+$$x = \frac{d}{2}, \qquad y = \ln(\bar{\varepsilon}_d)$$
+$$w_d = \left(\frac{\bar{\varepsilon}_d}{\sigma_{\bar{\varepsilon}_d}}\right)^2$$
+and
+$$\Lambda = e^{-m}.$$
+
+No fit parameter was selected after inspection of the target result.
+
+---
+
+# Governance trail
+
+```mermaid
+flowchart LR
+    R1["run-001<br/>Exploratory"] --> F1["FAILURE #001<br/>freeze-order"]
+
+    V3["Prereg v3"]
+    F1 --> V3
+    C1["Claude Gate PASS"]
+    V3 --> C1
+    FR1["Frozen SHA"]
+    C1 --> FR1
+    R2["run-002<br/>confirmatory"]
+    FR1 --> R2
+
+    F2["B-W1<br/>evidence incomplete"]
+    R2 --> F2
+
+    V4["Prereg v4<br/>evidence remediation"]
+    F2 --> V4
+    C2["Claude Gate PASS"]
+    V4 --> C2
+    FR2["PREREG_SHA<br/>6daa877b..."]
+    C2 --> FR2
+
+    R3["run-003-recreation"]
+    FR2 --> R3
+    C3["Post-execution<br/>SURVIVES-REVIEW"]
+    R3 --> C3
+
+    I["Ivan<br/>Operator Ratification"]
+    C3 --> I
+    END["VERIFIED WITH LIMITATIONS<br/>INSTANCE CLOSED"]
+    I --> END
+```
+
+Failures remain part of the evidence history. A later successful run does not erase them.
+
+---
+
+# Final evidence
+
+**Frozen preregistration:**
+`6daa877b181aa6ca09900589218eac2d1e8a5282`
+
+**Final evidence commit:**
+`78dd4a51e6ba68ce09f7a7da93f0b2f1505bc7aa`
+
+**Closure commit:**
+`2b2e1645e54d3be4025d57b56a1b24be2030f2f3`
+
+Evidence package:
+```text
+evidence/runs/run-003-recreation/
+├── command.sh
+├── stdout.log
+├── stderr.log
+├── exit_code.txt
+├── env.txt
+├── git_commit.txt
+├── inputs.sha256
+├── manifest.sha256
+├── bytes_read.json
+├── recreation_comparison.json
+├── run_metadata.json
+├── summary.json
+└── outputs.sha256
+```
+
+---
+
+## Final disposition
+
+> ### ✅ VERIFIED WITH LIMITATIONS
+>
+> **Verified:** the deposited Libra matching-family data independently reproduce the published `ε₇` and `Λ` values within preregistered tolerances.
+>
+> **Limitation:** the separate neural-decoder headline is not reconstructible from the deposited artifact evidence evaluated by this instance.
+>
+> **No claim of falsification is made.**
+
+`willow-decoder-s1` · **Ratified · Closed**
