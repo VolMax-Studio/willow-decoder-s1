@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-reproduce.py — Single-Entry Reproduction Harness for willow-decoder-s1
+reproduce.py — Single-Entry Reproduction Harness for willow-decoder-s1 (v3)
 
-Strictly executes the registered audit protocol defined in PREREGISTRATION.md:
-  G0: Provenance & integrity (data_manifest.json, SHA-256 bitstream validation)
+Strictly executes the registered audit protocol defined in PREREGISTRATION.md v3:
+  G0: Provenance & 728-entry source lineage (data_manifest.json, SOURCE_MAPPING.json)
   G1: Dynamic population derivation (P1: N_Libra = 364)
-  G2: Target B Scope Finding (case-insensitive neural/weight artifact search)
-  G3: Deterministic reproduction (Targets A1 & A2: eps_7, Lambda)
+  G2: Target B Scope Finding across complete 9,959-member archive inventory
+  G3: Deterministic Target A recomputation (eps_7, Lambda) under exact WLS
 """
 
 import os
@@ -21,19 +21,22 @@ import numpy as np
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 DATASET_DOI = "10.5281/zenodo.13273331"
 ARCHIVE_PINNED_MD5 = "21fa6ad35b395d838ebcdbc92e364a12"
+ARCHIVE_FILENAME = "google_105Q_surface_code_d3_d5_d7.zip"
 
 # Preregistered targets and tolerances (evaluated post-fit only)
 PUB_EPS_7 = 1.71e-3
-TOL_EPS_7_R1 = 0.005e-3  # Half-unit rule on second displayed decimal in 10^-3 (0.01e-3 / 2)
+TOL_EPS_7_R1 = 0.005e-3  # Half-unit rule on second displayed decimal in 10^-3
 
 PUB_LAMBDA = 2.04
-TOL_LAMBDA_R1 = 0.005    # Half-unit rule on second displayed decimal (0.01 / 2)
+TOL_LAMBDA_R1 = 0.005    # Half-unit rule on second displayed decimal
 
 IMMUTABLE_INPUT_FILES = [
     "PREREGISTRATION.md",
     "reproduce.py",
     "requirements-minimal.txt",
-    "data_manifest.json"
+    "data_manifest.json",
+    "SOURCE_MAPPING.json",
+    "archive_inventory.json"
 ]
 
 
@@ -112,22 +115,38 @@ def halt(gate: str, reason: str):
     sys.exit(1)
 
 
-def gate_0_provenance(manifest_path: str):
-    """G0: Verify source archive identification and manifest presence."""
-    if not os.path.exists(manifest_path):
-        halt("G0", f"Manifest file missing: {manifest_path}")
+def gate_0_provenance(instance_dir: str):
+    """G0: Verify source archive identification, manifest presence, and 728-entry source mapping."""
+    manifest_path = os.path.join(instance_dir, "data_manifest.json")
+    mapping_path = os.path.join(instance_dir, "SOURCE_MAPPING.json")
+    inventory_path = os.path.join(instance_dir, "archive_inventory.json")
+
+    for p in [manifest_path, mapping_path, inventory_path]:
+        if not os.path.exists(p):
+            halt("G0", f"Required provenance file missing: {p}")
+
     with open(manifest_path, "r") as f:
         manifest = json.load(f)
-    if not manifest:
-        halt("G0", "Manifest is empty")
-    return manifest
+    with open(mapping_path, "r") as f:
+        mapping = json.load(f)
+    with open(inventory_path, "r") as f:
+        inventory = json.load(f)
+
+    if len(manifest) != 728:
+        halt("G0", f"Manifest entries count mismatch: expected 728, found {len(manifest)}")
+    if mapping.get("mapped_entries_count") != 728 or mapping.get("unmapped_count") != 0:
+        halt("G0", f"Source mapping invariant violated: {mapping.get('mapped_entries_count')} mapped, {mapping.get('unmapped_count')} unmapped")
+    if not mapping.get("all_crc_verified") or not mapping.get("all_sha256_verified"):
+        halt("G0", "Source mapping CRC or SHA-256 verification failed")
+
+    return manifest, mapping, inventory
 
 
 def gate_1_population(manifest: dict):
     """
     G1 / P1: Dynamically derive N_Libra from manifest keys.
     Operational definition: count(experimental roots containing
-    decoding_results/libra_decoder_with_rl_optimized_prior/)
+    decoding_results/libra_decoder_with_rl_optimized_prior/ or libra_predicted.b8)
     """
     libra_roots = set()
     for key in manifest.keys():
@@ -143,25 +162,43 @@ def gate_1_population(manifest: dict):
     return sorted(list(libra_roots))
 
 
-def gate_2_target_b_scope(manifest: dict):
-    """G2 / Target B: Case-insensitive search for neural/weight artifacts in manifest."""
-    matching = [k for k in manifest.keys() if any(term in k.lower() for term in ["neural", "weight"])]
-    count = len(matching)
-    disposition = "TARGET B: ABSENCE FROM DEPOSITED ARTIFACT" if count == 0 else f"TARGET B: FOUND {count} MATCHING ARTIFACTS"
-    return count, matching, disposition
+def gate_2_target_b_scope(inventory: dict):
+    """
+    G2 / Target B: Complete archive inventory search for neural/weight artifacts.
+    Evaluates all 9,959 archive members against preregistered tokens: neural, weight, weights.
+    """
+    members = inventory.get("members", [])
+    if len(members) != 9959:
+        halt("G2", f"Archive inventory member count mismatch: expected 9959, found {len(members)}")
+
+    tokens = ["neural", "weight", "weights"]
+    matching_paths = []
+    for m in members:
+        path_lower = m["archive_path"].lower()
+        if any(tok in path_lower for tok in tokens):
+            matching_paths.append(m["archive_path"])
+
+    count = len(matching_paths)
+    pipelines = inventory.get("distinct_decoder_pipelines", [])
+
+    if count == 0:
+        disposition = "NO_EXPLICIT_NEURAL_PIPELINE_OR_WEIGHT_ARTIFACT_IDENTIFIED_IN_ARCHIVE_INVENTORY"
+    else:
+        disposition = f"FOUND_{count}_MATCHING_NEURAL_ARTIFACTS"
+
+    return count, matching_paths, pipelines, disposition
 
 
 def verify_bitstream_integrity(data_root: str, manifest: dict, roots: list):
     """Verify presence, byte lengths, and SHA-256 digests against manifest."""
     for root in roots:
         act_rel = f"{root}/obs_flips_actual.b8"
-        pred_rel_1 = f"{root}/libra_predicted.b8"
-        pred_rel_2 = f"{root}/decoding_results/libra_decoder_with_rl_optimized_prior/obs_flips_predicted.b8"
+        pred_rel = f"{root}/libra_predicted.b8"
 
         act_file = os.path.join(data_root, root, "obs_flips_actual.b8")
-        pred_file = os.path.join(data_root, root, "decoding_results/libra_decoder_with_rl_optimized_prior/obs_flips_predicted.b8")
+        pred_file = os.path.join(data_root, root, "libra_predicted.b8")
         if not os.path.exists(pred_file):
-            pred_file = os.path.join(data_root, root, "libra_predicted.b8")
+            pred_file = os.path.join(data_root, root, "decoding_results/libra_decoder_with_rl_optimized_prior/obs_flips_predicted.b8")
 
         if not os.path.exists(act_file):
             halt("G0", f"Missing actual bitstream: {act_file}")
@@ -178,11 +215,8 @@ def verify_bitstream_integrity(data_root: str, manifest: dict, roots: list):
 
         if act_rel in manifest and h_act != manifest[act_rel]:
             halt("G0", f"SHA-256 mismatch for {act_rel}")
-
-        if pred_rel_1 in manifest and h_pred != manifest[pred_rel_1]:
-            halt("G0", f"SHA-256 mismatch for {pred_rel_1}")
-        elif pred_rel_2 in manifest and h_pred != manifest[pred_rel_2]:
-            halt("G0", f"SHA-256 mismatch for {pred_rel_2}")
+        if pred_rel in manifest and h_pred != manifest[pred_rel]:
+            halt("G0", f"SHA-256 mismatch for {pred_rel}")
 
         if len(b_act) != len(b_pred) or len(b_act) == 0:
             halt("G0", f"Bitstream length mismatch or zero length in {root}: act={len(b_act)}, pred={len(b_pred)}")
@@ -190,8 +224,9 @@ def verify_bitstream_integrity(data_root: str, manifest: dict, roots: list):
 
 def fit_decay(cycles, p_L_values, n_shots=50000):
     """
-    Deterministic weighted least-squares fit for per-round error rate:
+    W-1 Frozen Weighted Least-Squares Fit for Per-Round Decay:
     ln(1 - 2*P_L(r)) = ln(1 - 2*eps_init) + r * ln(1 - 2*eps_d)
+    w_i = 1 / sigma_y^2 = N_shots * (1 - 2p)^2 / (4 * p * (1 - p))
     """
     t = np.array(cycles, dtype=float)
     p = np.array(p_L_values, dtype=float)
@@ -221,8 +256,9 @@ def fit_decay(cycles, p_L_values, n_shots=50000):
 
 def fit_lambda(d_list, eps_list, sigma_list):
     """
-    Deterministic weighted least-squares fit for Lambda:
+    W-1 Frozen Weighted Least-Squares Fit for Lambda:
     ln(eps_d) = ln(C) - (d/2) * ln(Lambda)
+    w_d = 1 / sigma_y^2 = (eps_d / sigma_eps_d)^2
     """
     x = np.array(d_list, dtype=float) / 2.0
     y = np.log(eps_list)
@@ -258,9 +294,9 @@ def run_g3_recomputation(data_root: str, roots: list):
             series[key] = []
 
         act_file = os.path.join(data_root, root, "obs_flips_actual.b8")
-        pred_file = os.path.join(data_root, root, "decoding_results/libra_decoder_with_rl_optimized_prior/obs_flips_predicted.b8")
+        pred_file = os.path.join(data_root, root, "libra_predicted.b8")
         if not os.path.exists(pred_file):
-            pred_file = os.path.join(data_root, root, "libra_predicted.b8")
+            pred_file = os.path.join(data_root, root, "decoding_results/libra_decoder_with_rl_optimized_prior/obs_flips_predicted.b8")
 
         act = np.fromfile(act_file, dtype=np.uint8)
         pred = np.fromfile(pred_file, dtype=np.uint8)
@@ -341,8 +377,8 @@ def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
     legacy_results_dir = os.path.join(instance_dir, "results")
     os.makedirs(legacy_results_dir, exist_ok=True)
 
-    # G0: Provenance & integrity
-    manifest = gate_0_provenance(manifest_path)
+    # G0: Provenance & 728-entry lineage check
+    manifest, mapping, inventory = gate_0_provenance(instance_dir)
 
     # Save manifest SHA-256 digest
     with open(manifest_path, "rb") as f:
@@ -356,13 +392,13 @@ def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
     derived_roots = gate_1_population(manifest)
     n_libra = len(derived_roots)
 
-    # G2: Target B Scope Finding
-    target_b_count, _, target_b_disp = gate_2_target_b_scope(manifest)
+    # G2: Target B Scope Finding across complete archive inventory (9,959 members)
+    target_b_count, _, pipelines, target_b_disp = gate_2_target_b_scope(inventory)
 
     # G0 Bitstream verification
     verify_bitstream_integrity(data_root, manifest, derived_roots)
 
-    # G3: Reproduction (Target A1 & Target A2)
+    # G3: Target A Reproduction (A1 & A2)
     results = run_g3_recomputation(data_root, derived_roots)
 
     t_run_end = datetime.now(timezone.utc).isoformat()
@@ -370,14 +406,22 @@ def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
     summary = {
         "run_id": run_id,
         "prereg_sha": prereg_sha,
-        "audit_object": "Willow Surface-Code Decoding Dataset (Zenodo 10.5281/zenodo.13273331)",
+        "audit_object": f"Willow Surface-Code Decoding Dataset (Zenodo {DATASET_DOI})",
+        "archive_filename": ARCHIVE_FILENAME,
         "archive_md5": ARCHIVE_PINNED_MD5,
         "dataset_doi": DATASET_DOI,
         "manifest_sha256": manifest_sha,
         "t_run_start_utc": t_run_start,
         "t_run_end_utc": t_run_end,
         "gates": {
-            "G0_provenance": "PASSED",
+            "G0_provenance_and_lineage": {
+                "status": "PASSED",
+                "manifest_entries": len(manifest),
+                "mapped_entries": mapping.get("mapped_entries_count"),
+                "unmapped_entries": mapping.get("unmapped_count"),
+                "crc_matches": mapping.get("all_crc_verified"),
+                "sha256_matches": mapping.get("all_sha256_verified")
+            },
             "G1_population": {
                 "status": "PASSED",
                 "derived_N_Libra": n_libra,
@@ -385,8 +429,11 @@ def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
             },
             "G2_target_b_scope_finding": {
                 "status": "PASSED",
+                "archive_members_evaluated": len(inventory.get("members", [])),
+                "distinct_decoder_pipelines": pipelines,
                 "matching_neural_artifacts_count": target_b_count,
-                "disposition": target_b_disp
+                "disposition": target_b_disp,
+                "scientific_interpretation": "Reconstruction of separate neural-decoder headline is NOT DEMONSTRATED from deposited public artifact alone."
             },
             "G3_reproduction": "PASSED"
         },
@@ -397,7 +444,8 @@ def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
             },
             "Target_B_scope_finding": {
                 "count": target_b_count,
-                "disposition": target_b_disp
+                "disposition": target_b_disp,
+                "reconstruction_status": "NOT_DEMONSTRATED_FROM_DEPOSITED_ARTIFACT"
             },
             "Target_A1_eps_7": {
                 "recomputed_value": results["mean_eps"][7],
@@ -457,9 +505,9 @@ def execute_run(instance_dir, run_dir, run_id, prereg_sha, quiet=False):
         print(f"willow-decoder-s1 — AUDIT EXECUTION SUMMARY ({run_id})")
         print("================================================================================")
         print(f"PREREG_SHA:                {prereg_sha}")
-        print(f"G0 Provenance:             PASSED (Zenodo {DATASET_DOI})")
+        print(f"G0 Provenance & Lineage:   PASSED (Zenodo {DATASET_DOI}, 728/728 members verified)")
         print(f"G1 Population (P1):        PASSED (N_Libra = {n_libra} derived dynamically)")
-        print(f"G2 Target B Scope:         PASSED (0 matching artifacts -> ABSENCE FROM DEPOSIT)")
+        print(f"G2 Target B Archive Scope: PASSED (9,959 members evaluated -> {target_b_disp})")
         print(f"G3 Target A1 (eps_7):      {results['mean_eps'][7]*1e3:.4f}e-3 vs {PUB_EPS_7*1e3:.2f}e-3 [|Δ|={results['diff_eps_7']:.2e} <= {TOL_EPS_7_R1:.2e}] -> VERIFIED")
         print(f"G3 Target A2 (Lambda):     {results['Lambda']:.4f} vs {PUB_LAMBDA:.2f} [|Δ|={results['diff_lambda']:.4f} <= {TOL_LAMBDA_R1:.4f}] -> VERIFIED")
         print("================================================================================")

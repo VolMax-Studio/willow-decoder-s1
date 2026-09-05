@@ -5,20 +5,20 @@
 Project: willow-decoder-s1
 Repository: VolMax-Studio/willow-decoder-s1
 Branch: instances/willow-decoder-s1
-Current commit: Pending draft v2 commit
-Preregistration commit: Pending Gate pass and Operator freeze (PREREG_SHA_v2)
+Current commit: Pending draft v3 commit
+Preregistration commit: Pending Gate pass and Operator freeze (PREREG_SHA_v3)
 Latest run ID: run-001 (Exploratory / Protocol Non-Compliance per FAILURES #001)
 Next run ID: run-002-confirmatory (NOT YET AUTHORIZED)
 Deadline: 2026-09-12
 
 ## Phase
 
-Specification Draft v2 (PRE-EXECUTION GATE DRAFT) — Execution State: NOT AUTHORIZED
+Specification Draft v3 (PRE-EXECUTION GATE DRAFT) — Execution State: NOT AUTHORIZED
 
 Portfolio status: ACTIVE / DEADLINE PRIORITY
 
 Architecture:
-Public Zenodo artifact decoding audit (Zenodo 10.5281/zenodo.13273331) evaluating Target A (matching-family Libra decoder recomputation) and Target B (neural decoder artifact scope boundary).
+Public Zenodo artifact decoding audit (Zenodo 10.5281/zenodo.13273331) evaluating Target A (matching-family Libra decoder recomputation) and Target B (neural decoder artifact scope boundary across complete 9,959-member archive inventory).
 
 Audit Class:
 External public-artifact audit.
@@ -34,20 +34,21 @@ Claim under test (Target B): Whether the public Zenodo archive contains files co
 
 Public artifacts:
 - Zenodo deposit `10.5281/zenodo.13273331` (MD5: `21fa6ad35b395d838ebcdbc92e364a12`).
-- Preserved local telemetry bitstreams (`728` files matching SHA-256 digests in `data_manifest.json`).
+- Preserved local telemetry bitstreams (`728` files matching SHA-256 digests in `data_manifest.json` and CRC32 in `SOURCE_MAPPING.json`).
+- Complete archive central directory inventory (`archive_inventory.json`, 9,959 members).
 
 ## Current results
 
 - run-001: Classified as `Exploratory (not pre-registered)` per FAILURES #001 due to execution preceding git freeze commit.
-- run-002-confirmatory: Awaiting pre-execution Gate review of Draft v2.
+- run-002-confirmatory: Awaiting pre-execution Gate review of Draft v3.
 
 ## Gate status
 
 Gate model/person: Claude
-Gate outcome: PENDING PRE-EXECUTION GATE REVIEW (Draft v2)
+Gate outcome: PENDING PRE-EXECUTION GATE REVIEW (Draft v3)
 Blocking findings:
 None.
 
 ## Next single action
 
-Submit Draft v2 commit to Claude for pre-execution Gate review.
+Submit Draft v3 commit to Claude for pre-execution Gate review.

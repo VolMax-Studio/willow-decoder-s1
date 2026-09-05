@@ -1,5 +1,5 @@
 project: willow-decoder-s1
-phase: draft_v2
+phase: draft_v3
 owner: Ivan
 research_lead: Sol
 gate: Claude
@@ -16,4 +16,4 @@ deadline: 2026-09-12
 verdict: null
 execution_state: PRE_EXECUTION_DRAFT
 blocking_issue: null
-next_action: Submit prereg v2 draft commit to Claude for pre-execution Gate review.
+next_action: Submit prereg v3 draft commit to Claude for pre-execution Gate review.

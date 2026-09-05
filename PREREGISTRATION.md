@@ -1,126 +1,144 @@
-# Willow Decoder Audit — Pre-registration v2
+# Willow Decoder Audit — Pre-registration v3
 
 **Instance:** `willow-decoder-s1`  
-**Phase:** Specification Draft v2 (PRE-EXECUTION GATE DRAFT)  
+**Phase:** Specification Draft v3 (PRE-EXECUTION GATE DRAFT)  
 **Target Run:** `run-002-confirmatory`  
-**Purpose:** Independent computational reproduction and deposited-artifact scope audit of the publicly deposited Willow surface-code decoding dataset.
+**Audit Object:** Zenodo `10.5281/zenodo.13273331` (`google_105Q_surface_code_d3_d5_d7.zip`, MD5: `21fa6ad35b395d838ebcdbc92e364a12`)
 
 ---
 
 ## 1. Prior Exposure & Lineage Disclosure
 
-An exploratory run (`run-001`) was previously executed locally prior to git freeze of the preregistration specification. Per `FAILURES #001`, `run-001` is permanently classified as `Exploratory (not pre-registered)`.
+This pre-registration v3 incorporates full prior exposure disclosure per P10 governance standards:
 
-### Prior Observations from run-001:
-- Dynamically derived Libra population count: $N_{\text{Libra}} = 364$.
-- Recomputed matching-family Libra logical error rate for distance $d=7$: $\varepsilon_7 \approx 1.71 \times 10^{-3}$.
-- Recomputed matching-family threshold scaling exponent: $\Lambda \approx 2.04$.
-- Target B case-insensitive search for neural/weight artifacts in public Zenodo manifest returned count $= 0$.
-
-`run-002-confirmatory` is the formal, pre-registered confirmatory run executed strictly after independent Gate review and Operator freeze.
-
----
-
-## 2. Scope & Boundaries
-
-This audit evaluates only claims and properties that can be directly tested from the publicly deposited artifacts in the referenced Zenodo archive:
-
-1. **Target A (Deposited-Data Numerical Reproduction):** Direct recomputation of matching-family Libra decoder error rates ($\varepsilon_7$) and scaling exponent ($\Lambda$) from deposited bitstreams.
-2. **Target B (Deposited-Artifact Scope Finding):** Verification of the presence or absence of neural-network decoder weights, architecture definitions, and neural prediction bitstreams in the public archive.
-
-### Strict Non-Inference Rule:
-- The absence of neural decoder artifacts in the public Zenodo archive establishes strictly an **archive-content boundary**.
-- It **does not** establish that Google's neural headline claim ($0.143\%$ error rate, $\Lambda = 2.14$) is false or that neural decoding was not performed experimentally.
-- No inference from absence in the public deposit to non-existence outside the archive is permitted.
+1. **Exploratory Run Lineage (`FAILURES #001`):** An exploratory execution (`run-001`) was performed prior to the formal preregistration freeze commit. Per `FAILURES #001`, `run-001` is classified as `Exploratory (not pre-registered)`.
+2. **Prior Numerical Observations from run-001:**
+   - Population count: $N_{\text{Libra}} = 364$ distinct experimental configurations.
+   - Matching-family Libra logical error rate for $d=7$: $\varepsilon_7 \approx 1.71 \times 10^{-3}$.
+   - Matching-family threshold scaling exponent: $\Lambda \approx 2.04$.
+3. **Prior Archive Inventory Observations (Claude Gate Review):**
+   - The complete public Zenodo archive contains **9,959 members** (verified via central directory parsing).
+   - The archive contains **five named decoder pipelines** under `decoding_results/`:
+     1. `correlated_matching_decoder_with_rl_optimized_prior`
+     2. `correlated_matching_decoder_with_si1000_prior`
+     3. `harmony_decoder_with_rl_optimized_prior`
+     4. `harmony_decoder_with_si1000_prior`
+     5. `libra_decoder_with_rl_optimized_prior`
+   - No explicitly named neural pipeline directory, model weight file, or neural prediction bitstream was identified in the archive inventory.
+4. **Target B Non-Outcome-Blind Status:** Because the archive inventory has already been inspected, Target B is evaluated as a pre-registered reproduction of the archive inventory finding, not a blinded discovery.
 
 ---
 
-## 3. Provenance & Dataset Identity
+## 2. Scope & Boundary Invariants
 
-- **Source Archive:** Zenodo [`10.5281/zenodo.13273331`](https://doi.org/10.5281/zenodo.13273331)
-- **Archive Pinned MD5:** `21fa6ad35b395d838ebcdbc92e364a12` (`google_105Q_surface_code_d3_d5_d7.zip`, 5.72 GB)
-- **Authoritative Telemetry Manifest:** `data_manifest.json` containing SHA-256 digests for all 728 telemetry bitstreams (`obs_flips_actual.b8` and `obs_flips_predicted.b8` / `libra_predicted.b8`).
+The audit evaluates two distinct targets with separate evidence chains:
 
-Every bitstream file used in the audit must match its pinned SHA-256 digest in `data_manifest.json`. Any hash mismatch triggers an immediate halt (`EXECUTION_STATE_INVALID`).
+1. **Target A (Matching-Family Deposited Numerical Reproduction):** Recomputation of matching-family Libra decoder error rates ($\varepsilon_7$) and scaling exponent ($\Lambda$) from the 728 deposited telemetry bitstreams mapped 1:1 to the public Zenodo archive.
+2. **Target B (Complete Archive Scope Finding):** Systematic inventory of all 9,959 members of the public Zenodo archive to establish the presence or absence of identifiable neural decoder artifacts.
 
----
-
-## 4. Operational Population Definition (P1 / G1)
-
-Let an experimental root be a relative directory containing a deposited Libra decoding pipeline:
-`decoding_results/libra_decoder_with_rl_optimized_prior/` (or `libra_predicted.b8`).
-
-The population $N_{\text{Libra}}$ is defined operationally and derived dynamically from `data_manifest.json`:
-$$N_{\text{Libra}} = \text{count}(\text{distinct experimental roots})$$
-
-- **Expected Population:** $N_{\text{Libra}} = 364$.
-- The runner must derive $N_{\text{Libra}}$ from the manifest itself.
-- If the derived count differs from 364, execution halts immediately (`POPULATION_MISMATCH`).
+### Strict Non-Inference Invariant (§15):
+- The absence of neural decoder artifacts in the public Zenodo archive establishes strictly that:
+  $$\text{Reconstruction of the neural-decoder headline is }\mathbf{NOT\ DEMONSTRATED\ FROM\ DEPOSITED\ ARTIFACT\ ALONE}$$
+- It **does not** establish that Google's neural headline claim ($0.143\%$ error rate, $\Lambda = 2.14$) is false, that neural decoding was not performed experimentally, or that model weights do not exist outside the archive.
 
 ---
 
-## 5. Target B — Deposited-Artifact Scope Finding (G2)
+## 3. Provenance & 728-Entry Source Lineage (W-2 Resolution)
+
+### Archive Identity:
+- **Zenodo Record:** `13273331`
+- **DOI:** [`10.5281/zenodo.13273331`](https://doi.org/10.5281/zenodo.13273331)
+- **Archive Filename:** `google_105Q_surface_code_d3_d5_d7.zip`
+- **Archive Size:** `5,716,907,033` bytes (5.45 GB)
+- **Remote Archive MD5 Digest:** `21fa6ad35b395d838ebcdbc92e364a12`
+
+### 1:1 Member Mapping (`SOURCE_MAPPING.json`):
+Every entry in `data_manifest.json` maps bijectively to exactly one original archive member:
+1. `obs_flips_actual.b8`:
+   - Local: `{patch}/{basis}/{round}/obs_flips_actual.b8`
+   - Archive: `google_105Q_surface_code_d3_d5_d7/{patch}/{basis}/{round}/obs_flips_actual.b8`
+2. `libra_predicted.b8`:
+   - Local: `{patch}/{basis}/{round}/libra_predicted.b8`
+   - Archive: `google_105Q_surface_code_d3_d5_d7/{patch}/{basis}/{round}/decoding_results/libra_decoder_with_rl_optimized_prior/obs_flips_predicted.b8`
+
+### Lineage Invariants:
+- Total manifest entries: `728`
+- Total mapped entries: `728`
+- Unmapped entries: `0`
+- Ambiguous mappings: `0`
+- CRC32 mismatches between local and archive members: `0`
+- SHA-256 mismatches between local and manifest digests: `0`
+
+---
+
+## 4. Population Invariant (P1 / G1)
+
+The Libra population $N_{\text{Libra}}$ is defined operationally and derived dynamically from `SOURCE_MAPPING.json` and `data_manifest.json`:
+$$N_{\text{Libra}} = \text{count}(\text{distinct experimental roots}) = 364$$
+across 14 patches ($9 \times d=3$, $4 \times d=5$, $1 \times d=7$), 2 bases ($X, Z$), and 13 primary rounds ($r \in [10, 250]$).
+
+If derived count $\ne 364$, execution halts immediately (`POPULATION_MISMATCH`).
+
+---
+
+## 5. Target B — Complete Archive Scope Finding (G2)
 
 ### Test Procedure:
-Perform a case-insensitive search across all path and key entries in the authoritative manifest for neural-network and model-weight indicators:
+Enumerate all 9,959 members in `archive_inventory.json` and execute case-insensitive matching against path tokens:
 ```text
-"neural", "weight"
+"neural", "weight", "weights"
 ```
 
-### Decision Rule:
-- If $\text{count}(\text{matching artifacts}) == 0$:
-  $$\text{Disposion: }\mathbf{TARGET\ B:\ ABSENCE\ FROM\ DEPOSITED\ ARTIFACT}$$
-- Any matching path is recorded verbatim.
-- The outcome is classified strictly as a scope finding of the public deposit.
+### Controlled Output Vocabulary:
+- If $\text{count}(\text{matching}) == 0$:
+  $$\mathbf{NO\_EXPLICIT\_NEURAL\_PIPELINE\_OR\_WEIGHT\_ARTIFACT\_IDENTIFIED\_IN\_ARCHIVE\_INVENTORY}$$
+- Report the complete list of 5 distinct decoder pipelines present in the archive.
 
 ---
 
-## 6. Target A1 — Libra Logical Error Rate $\varepsilon_7$
+## 6. Target A1 & A2 — Exact Weighted Least-Squares Model (W-1 Resolution)
 
-### Target Reference:
-- Published reference value: $\varepsilon_7 = 1.71 \times 10^{-3}$ (Nature 2025 reported value for matching-family Libra).
-- Tolerance: $R_1 = 0.005 \times 10^{-3}$ (half-unit rule on second displayed decimal place in units of $10^{-3}$).
+### Exact Weighting Specification:
 
-### Recomputation Method:
-For each distance $d \in \{3, 5, 7\}$, patch, basis $B \in \{X, Z\}$, and round $r \in [10, 250]$:
-1. Compute per-shot logical error probability $P_L(r)$ via bitwise XOR mean between actual and predicted bitstreams:
-   $$P_L(r) = \frac{1}{N_{\text{shots}}} \sum_{i=1}^{N_{\text{shots}}} (\text{actual}_i \oplus \text{predicted}_i)$$
-2. Fit exponential decay model via deterministic weighted least-squares:
-   $$\ln(1 - 2 P_L(r)) = \ln(1 - 2 \varepsilon_{\text{init}}) + r \cdot \ln(1 - 2 \varepsilon_d)$$
-3. Compute distance-7 mean error rate $\varepsilon_7 = \text{mean}(\varepsilon_{7, \text{patch}, B})$.
-4. Target A1 passes if and only if:
-   $$|\varepsilon_7 - 1.71 \times 10^{-3}| \le 0.005 \times 10^{-3}$$
+#### 1. Per-Round Decay Fit (`fit_decay`):
+For each of the 28 series (14 patches $\times$ 2 bases):
+- Empirical logical error probability across $N_{\text{shots}} = 50,000$:
+  $$P_L(r) = \frac{1}{N_{\text{shots}}} \sum_{i=1}^{N_{\text{shots}}} (\text{actual}_i \oplus \text{predicted}_i)$$
+- Bounded probability: $p = \text{clip}(P_L(r), 10^{-7}, 0.499999)$
+- Transformed coordinate: $y = \ln(1 - 2p)$
+- Binomial variance: $\sigma_p = \sqrt{\frac{p(1-p)}{N_{\text{shots}}}}$
+- Propagated standard error: $\sigma_y = \frac{2 \sigma_p}{1 - 2p}$
+- **Exact Inverse-Variance Weights:**
+  $$w_i = \frac{1}{\sigma_y^2} = \frac{N_{\text{shots}} (1 - 2p)^2}{4 p (1 - p)}$$
+- Model: $y(r) = \ln(1 - 2\varepsilon_{\text{init}}) + r \cdot \ln(1 - 2\varepsilon_d)$
+- Slope $m = \ln(1 - 2\varepsilon_d) \implies \varepsilon_d = \frac{1 - e^m}{2}$
+
+#### 2. Threshold Scaling Fit (`fit_lambda`):
+- Distance coordinate: $x = d / 2$ for $d \in \{3, 5, 7\}$
+- Mean error rate: $\bar{\varepsilon}_d = \text{mean}(\varepsilon_{d, \text{patch}, B})$
+- Standard error: $\sigma_{\bar{\varepsilon}_d} = \frac{\sqrt{\sum \sigma_{\varepsilon}^2}}{N_{\text{fits}}}$
+- Transformed coordinate: $y = \ln(\bar{\varepsilon}_d)$
+- **Exact Inverse-Variance Weights:**
+  $$w_d = \left(\frac{\bar{\varepsilon}_d}{\sigma_{\bar{\varepsilon}_d}}\right)^2$$
+- Model: $y(x) = \ln(C) - x \cdot \ln(\Lambda)$
+- Slope $m = -\ln(\Lambda) \implies \Lambda = e^{-m}$
+
+### Acceptance Tolerances:
+- **Target A1 ($\varepsilon_7$):** $|\bar{\varepsilon}_7 - 1.71 \times 10^{-3}| \le 0.005 \times 10^{-3}$ (half-unit rule on second displayed decimal).
+- **Target A2 ($\Lambda$):** $|\Lambda - 2.04| \le 0.005$ (half-unit rule on second displayed decimal).
 
 ---
 
-## 7. Target A2 — Threshold Scaling Exponent $\Lambda$
+## 7. Execution Invariants & Evidence Packaging
 
-### Target Reference:
-- Published reference value: $\Lambda = 2.04$.
-- Tolerance: $R_1 = 0.005$ (half-unit rule on second displayed decimal place).
-
-### Recomputation Method:
-Fit scaling relation across code distances $d \in \{3, 5, 7\}$ via deterministic weighted least-squares:
-$$\ln(\varepsilon_d) = \ln(C) - \frac{d}{2} \cdot \ln(\Lambda)$$
-
-Target A2 passes if and only if:
-$$|\Lambda - 2.04| \le 0.005$$
-
----
-
-## 8. Execution Governance & Artifact Requirements
-
-Official execution runner `reproduce.py` must enforce:
-1. **Clean Git Tree & Commit Verification:** `git status --porcelain` is empty and `git rev-parse HEAD == PREREG_SHA`.
-2. **Immutable Input Recording:** `PREREGISTRATION.md`, `reproduce.py`, `requirements-minimal.txt`, and `data_manifest.json` hashed into `inputs.sha256`.
-3. **Structured Evidence Output:** All outputs and logs written under `evidence/runs/<RUN_ID>/`:
-   - `git_commit.txt`
-   - `inputs.sha256`
-   - `outputs.sha256`
-   - `run_metadata.json`
-   - `summary.json`
-   - `stdout.log`
-   - `stderr.log`
-   - `exit_code.txt`
-   - `command.sh`
-   - `env.txt`
+Official execution runner `reproduce.py` enforces:
+1. `git status --porcelain` is empty.
+2. `git rev-parse HEAD == PREREG_SHA`.
+3. `inputs.sha256` records:
+   - `PREREGISTRATION.md`
+   - `reproduce.py`
+   - `requirements-minimal.txt`
+   - `data_manifest.json`
+   - `SOURCE_MAPPING.json`
+   - `archive_inventory.json`
+4. All outputs recorded under `evidence/runs/<RUN_ID>/` with `outputs.sha256`.
