@@ -5,7 +5,7 @@ research_lead: Sol
 gate: Claude
 ops: Ananke
 branch: instances/willow-decoder-s1
-gate_subject_draft_sha: 94ff22c83d69a6566085a1a15faeb9c661bbfe64
+gate_subject_draft_sha: 5ed5a5fcd97287c1ae75344bfd6db514c958ea98
 gate_outcome: PENDING_GATE_REVIEW
 accepted_by: null
 prereg_commit: null
