@@ -9,7 +9,7 @@
 
 > **Two published Libra matching-family quantities were independently reconstructed from the deposited raw bitstreams within preregistered tolerances.**
 >
-> The separate neural-decoder headline could not be reconstructed from the deposited artifact alone.
+> The deposited artifact was tested for a reconstructible neural-decoder evidence path; none was explicitly identified, so the neural headline itself was not admissible for numerical reproduction.
 
 ---
 
@@ -35,7 +35,7 @@
 | :--- | ---: | ---: | ---: | ---: | ---: | :--- |
 | **A1 · Libra $\varepsilon_7$** | `1.7100 × 10⁻³` | **`1.7113465 × 10⁻³`** | `1.35 × 10⁻⁶` | `5.00 × 10⁻⁶` | **27%** | ✅ **VERIFIED** |
 | **A2 · Libra $\Lambda$** | `2.0400` | **`2.038282`** | `0.0017` | `0.0050` | **34%** | ✅ **VERIFIED** |
-| **B · Neural scope** | `0.143% / Λ=2.14` headline | no reconstruction path established | — | archive inventory boundary | — | ⚠️ **NOT DEMONSTRATED FROM DEPOSITED ARTIFACT ALONE** |
+| **B · Neural scope** | `0.143% / Λ=2.14` headline | evidence path not demonstrated in archive | — | archive inventory boundary | — | ⚠️ **NOT DEMONSTRATED FROM DEPOSITED ARTIFACT ALONE** |
 
 ### Acceptance-margin view
 
@@ -162,11 +162,12 @@ The inventory test establishes exactly this:
 
 > **Zero archive paths among 9,959 deposited members contain the preregistered case-insensitive tokens `neural`, `weight`, or `weights`.**
 
-It does **not** establish that the archive contains no neural decoder under some non-explicit naming scheme.
+### Methodological Distinction:
+1. **Target B was explicitly tested:** The complete 9,959-member archive inventory was evaluated for an admissible neural-decoder reconstruction path, yielding zero explicit matches across all paths.
+2. **The neural headline itself was not numerically tested:** Because no reconstructible neural evidence path was demonstrated in the deposit, the neural headline claim ($0.143\% / \Lambda = 2.14$) was not admissible for numerical reproduction from the public artifact alone.
+3. **Non-Inference Rule (§15):** This does *not* establish that the archive contains no neural decoder under some non-explicit naming scheme, that neural decoding was not performed experimentally, or that Google's headline claim is false.
 
-It does **not** establish that Google's neural result is false.
-
-And the reproduced Libra value
+And the reproduced Libra matching-family value
 $$\Lambda = 2.0383$$
 must not be conflated with the separate neural-decoder headline value
 $$\Lambda = 2.14.$$
@@ -331,9 +332,9 @@ evidence/runs/run-003-recreation/
 
 > ### ✅ VERIFIED WITH LIMITATIONS
 >
-> **Verified:** the deposited Libra matching-family data independently reproduce the published `ε₇` and `Λ` values within preregistered tolerances.
+> **Verified:** The deposited Libra matching-family data independently reproduce the published `ε₇` and `Λ` values within preregistered tolerances.
 >
-> **Limitation:** the separate neural-decoder headline is not reconstructible from the deposited artifact evidence evaluated by this instance.
+> **Limitation:** The deposited artifact was tested for an admissible neural-decoder evidence path; none was explicitly identified, so the neural headline was not admissible for numerical reproduction from the deposited artifact alone.
 >
 > **No claim of falsification is made.**
 
