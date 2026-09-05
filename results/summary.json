@@ -1,0 +1,310 @@
+{
+  "archive_md5": "21fa6ad35b395d838ebcdbc92e364a12",
+  "audit_object": "Willow Surface-Code Decoding Dataset (Zenodo 10.5281/zenodo.13273331)",
+  "dataset_doi": "10.5281/zenodo.13273331",
+  "detailed_patch_fits": [
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": 0.0017437059883897432,
+      "eps_primary": 0.0055663290049928205,
+      "patch": "d3_at_q10_7",
+      "points_count": 13,
+      "sigma_primary": 2.8219733395976475e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.0032910793058429366,
+      "eps_primary": 0.005975048106204972,
+      "patch": "d3_at_q10_7",
+      "points_count": 13,
+      "sigma_primary": 3.1450276128081946e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.005985127794279621,
+      "eps_primary": 0.006309492527822036,
+      "patch": "d3_at_q2_7",
+      "points_count": 13,
+      "sigma_primary": 3.394246820826958e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": 0.0002810123134152076,
+      "eps_primary": 0.0054635593284939055,
+      "patch": "d3_at_q2_7",
+      "points_count": 13,
+      "sigma_primary": 2.7884810597786044e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.0008092130320748181,
+      "eps_primary": 0.006427119257539915,
+      "patch": "d3_at_q4_5",
+      "points_count": 13,
+      "sigma_primary": 3.566182254092099e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.002430155514896337,
+      "eps_primary": 0.005744808693534831,
+      "patch": "d3_at_q4_5",
+      "points_count": 13,
+      "sigma_primary": 2.9610966328999772e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.006075797603682265,
+      "eps_primary": 0.007323297924525962,
+      "patch": "d3_at_q4_9",
+      "points_count": 13,
+      "sigma_primary": 4.2705724592806056e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.006120396227970892,
+      "eps_primary": 0.006544460449581069,
+      "patch": "d3_at_q4_9",
+      "points_count": 13,
+      "sigma_primary": 3.6848956558801796e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.008896143122949285,
+      "eps_primary": 0.007296051841802098,
+      "patch": "d3_at_q6_11",
+      "points_count": 13,
+      "sigma_primary": 4.302695912711197e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.01065569427285784,
+      "eps_primary": 0.0077538108327364075,
+      "patch": "d3_at_q6_11",
+      "points_count": 13,
+      "sigma_primary": 4.525018842067461e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.00028939246763015625,
+      "eps_primary": 0.005611615721414109,
+      "patch": "d3_at_q6_3",
+      "points_count": 13,
+      "sigma_primary": 2.891483788513727e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.003061514528211462,
+      "eps_primary": 0.0053725719960704965,
+      "patch": "d3_at_q6_3",
+      "points_count": 13,
+      "sigma_primary": 2.716171625041793e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.0068064303821459005,
+      "eps_primary": 0.011286669868590782,
+      "patch": "d3_at_q6_7",
+      "points_count": 13,
+      "sigma_primary": 9.246546333450857e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.007720941906374401,
+      "eps_primary": 0.008502510865930124,
+      "patch": "d3_at_q6_7",
+      "points_count": 13,
+      "sigma_primary": 5.602140278207208e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": -0.00497539321600915,
+      "eps_primary": 0.007467161203192407,
+      "patch": "d3_at_q8_5",
+      "points_count": 13,
+      "sigma_primary": 4.310904487291433e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": 0.0033882412907978443,
+      "eps_primary": 0.005778435570741314,
+      "patch": "d3_at_q8_5",
+      "points_count": 13,
+      "sigma_primary": 3.024373314982099e-05
+    },
+    {
+      "basis": "X",
+      "distance": 3,
+      "eps_init_primary": 0.009653911854934638,
+      "eps_primary": 0.01046553067862882,
+      "patch": "d3_at_q8_9",
+      "points_count": 13,
+      "sigma_primary": 7.751769510804751e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 3,
+      "eps_init_primary": -0.005558604478056228,
+      "eps_primary": 0.009203548654412308,
+      "patch": "d3_at_q8_9",
+      "points_count": 13,
+      "sigma_primary": 6.304523236694469e-05
+    },
+    {
+      "basis": "X",
+      "distance": 5,
+      "eps_init_primary": -0.0028203352628218825,
+      "eps_primary": 0.003391211131695493,
+      "patch": "d5_at_q4_7",
+      "points_count": 13,
+      "sigma_primary": 1.4755522299068914e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 5,
+      "eps_init_primary": -0.0019485863343812193,
+      "eps_primary": 0.002677360471094903,
+      "patch": "d5_at_q4_7",
+      "points_count": 13,
+      "sigma_primary": 1.1635939909894516e-05
+    },
+    {
+      "basis": "X",
+      "distance": 5,
+      "eps_init_primary": -0.002651824765778854,
+      "eps_primary": 0.003686196295474342,
+      "patch": "d5_at_q6_5",
+      "points_count": 13,
+      "sigma_primary": 1.6419213223898956e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 5,
+      "eps_init_primary": -0.0006862435339083373,
+      "eps_primary": 0.002712318192929719,
+      "patch": "d5_at_q6_5",
+      "points_count": 13,
+      "sigma_primary": 1.1710717928257541e-05
+    },
+    {
+      "basis": "X",
+      "distance": 5,
+      "eps_init_primary": -0.004292049134212772,
+      "eps_primary": 0.004222817304863402,
+      "patch": "d5_at_q6_9",
+      "points_count": 13,
+      "sigma_primary": 1.9200732471717092e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 5,
+      "eps_init_primary": 0.004430101401719566,
+      "eps_primary": 0.0036696105570612203,
+      "patch": "d5_at_q6_9",
+      "points_count": 13,
+      "sigma_primary": 1.6471662490581706e-05
+    },
+    {
+      "basis": "X",
+      "distance": 5,
+      "eps_init_primary": -0.0007603535494365987,
+      "eps_primary": 0.004055127823639537,
+      "patch": "d5_at_q8_7",
+      "points_count": 13,
+      "sigma_primary": 1.877532547985362e-05
+    },
+    {
+      "basis": "Z",
+      "distance": 5,
+      "eps_init_primary": -0.0023978007732931017,
+      "eps_primary": 0.003539437232972842,
+      "patch": "d5_at_q8_7",
+      "points_count": 13,
+      "sigma_primary": 1.5813547998940906e-05
+    },
+    {
+      "basis": "X",
+      "distance": 7,
+      "eps_init_primary": -0.0025210996061103552,
+      "eps_primary": 0.0018591543460334536,
+      "patch": "d7_at_q6_7",
+      "points_count": 13,
+      "sigma_primary": 8.231955542009346e-06
+    },
+    {
+      "basis": "Z",
+      "distance": 7,
+      "eps_init_primary": -0.002371274652304578,
+      "eps_primary": 0.001563538724438207,
+      "patch": "d7_at_q6_7",
+      "points_count": 13,
+      "sigma_primary": 7.143524103666325e-06
+    }
+  ],
+  "gates": {
+    "G0_provenance": "PASSED",
+    "G1_population": {
+      "derived_N_Libra": 364,
+      "expected_N_Libra": 364,
+      "status": "PASSED"
+    },
+    "G2_bitstream_integrity": "PASSED",
+    "G3_recomputation": "PASSED"
+  },
+  "recomputed_metrics": {
+    "Lambda": {
+      "sigma": 0.003201160585861218,
+      "value": 2.038282091967165
+    },
+    "eps_3": {
+      "sem": 1.0966148657202321e-05,
+      "value": 0.007116223473678577
+    },
+    "eps_5": {
+      "sem": 5.593546718422772e-06,
+      "value": 0.0034942598762164323
+    },
+    "eps_7": {
+      "sem": 5.4496566099452576e-06,
+      "value": 0.0017113465352358304
+    }
+  },
+  "target_b_scope_finding": {
+    "disposition": "B1: NOT_REPRODUCIBLE_FROM_PUBLIC_DATA (Zero neural network predictions or weights deposited in public archive)",
+    "matching_neural_artifacts_count": 0,
+    "status": "RECORDED"
+  },
+  "targets_a": {
+    "target_a1_eps_7": {
+      "abs_diff": 1.3465352358304258e-06,
+      "published_reference": 0.00171,
+      "recomputed_value": 0.0017113465352358304,
+      "tolerance_R1": 5e-06,
+      "verdict": "VERIFIED (recomputed value rounds to published 1.71e-3)"
+    },
+    "target_a2_Lambda": {
+      "abs_diff": 0.0017179080328348917,
+      "published_reference": 2.04,
+      "recomputed_value": 2.038282091967165,
+      "tolerance_R1": 0.005,
+      "verdict": "VERIFIED (recomputed value rounds to published 2.04)"
+    }
+  },
+  "total_experiments_evaluated": 364,
+  "total_series_evaluated": 28
+}
