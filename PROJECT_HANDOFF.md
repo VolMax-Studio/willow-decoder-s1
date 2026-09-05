@@ -5,15 +5,15 @@
 Project: willow-decoder-s1
 Repository: VolMax-Studio/willow-decoder-s1
 Branch: instances/willow-decoder-s1
-Current commit: Pending draft v3 commit
-Preregistration commit: Pending Gate pass and Operator freeze (PREREG_SHA_v3)
+Current commit: 4eef577f9ba5b849adaba8aac53471e56d313443
+Preregistration commit: 4eef577f9ba5b849adaba8aac53471e56d313443
 Latest run ID: run-001 (Exploratory / Protocol Non-Compliance per FAILURES #001)
-Next run ID: run-002-confirmatory (NOT YET AUTHORIZED)
+Next run ID: run-002-confirmatory (AUTHORIZED)
 Deadline: 2026-09-12
 
 ## Phase
 
-Specification Draft v3 (PRE-EXECUTION GATE DRAFT) — Execution State: NOT AUTHORIZED
+Frozen Specification v3 (FROZEN PRE-REGISTRATION) — Execution State: READY_FOR_EXECUTION
 
 Portfolio status: ACTIVE / DEADLINE PRIORITY
 
@@ -40,15 +40,17 @@ Public artifacts:
 ## Current results
 
 - run-001: Classified as `Exploratory (not pre-registered)` per FAILURES #001 due to execution preceding git freeze commit.
-- run-002-confirmatory: Awaiting pre-execution Gate review of Draft v3.
+- run-002-confirmatory: Authorized for execution under PREREG_SHA_v3.
 
 ## Gate status
 
 Gate model/person: Claude
-Gate outcome: PENDING PRE-EXECUTION GATE REVIEW (Draft v3)
+Gate subject: 71e5b8ca319a11edab30ab7d5d9885362c00cee4
+Gate outcome: GATE_PASS (v3 specification accepted)
+Accepted by: Ivan (Operator)
 Blocking findings:
 None.
 
 ## Next single action
 
-Submit Draft v3 commit to Claude for pre-execution Gate review.
+Execute run-002-confirmatory via reproduce.py with pinned PREREG_SHA_v3.
