@@ -18,7 +18,7 @@ This pre-registration v4 incorporates full prior exposure disclosure per P10 gov
      - Population count: $N_{\text{Libra}} = 364$ distinct experimental configurations.
      - Matching-family Libra logical error rate for $d=7$: $\varepsilon_7 = 0.0017113465352358304$ (vs Nature published $1.71 \times 10^{-3}$, $|\Delta| = 1.35 \times 10^{-6} \le 5.00 \times 10^{-6}$).
      - Matching-family threshold scaling exponent: $\Lambda = 2.038282091967165$ (vs Nature published $2.04$, $|\Delta| = 0.0017 \le 0.0050$).
-     - Complete archive scope evaluation: 0 matching neural/weight artifacts across 9,959 members.
+     - Complete archive scope evaluation: 0 archive paths matching preregistered tokens `neural`, `weight`, `weights` across 9,959 members.
    - Per `FAILURES #002` (B-W1), `run-002-confirmatory` omitted command-bound stream logs (`stdout.log`, `stderr.log`, `command.sh`, `env.txt`), rendering it non-ratifiable.
    - `run-003-recreation` is formally specified to recreate the verified scientific outputs while supplying the complete command-bound evidence package.
 3. **Target B Non-Outcome-Blind Status:** Because the archive inventory has already been inspected, Target B is evaluated as a pre-registered reproduction of the archive inventory finding, not a blinded discovery.
@@ -129,16 +129,18 @@ For each of the 28 series (14 patches $\times$ 2 bases):
 
 To ensure full accountability and eliminate runtime ambiguity:
 1. **Per-File Shot Invariant:** Every evaluated `.b8` file must contain exactly 50,000 bytes ($1$ byte per shot for $N_{\text{shots}} = 50,000$). Any deviation halts execution (`EXECUTION_STATE_INVALID`).
-2. **Global Input Byte Invariant:** Exactly 728 files must be read, accounting for exactly:
-   $$\text{Total Bytes Read} = 728 \times 50,000 = 36,400,000\text{ bytes (34.71 MB)}$$
-3. **Accounting Artifact:** Every run produces `bytes_read.json` recording total bytes, total files, and per-file byte counts and SHA-256 digests.
+2. **Global Input Byte Invariant:** Exactly 728 unique files are processed:
+   $$\text{Unique Input Dataset} = 728 \text{ files} \times 50,000\text{ bytes} = 36,400,000\text{ bytes (34.71 MB)}$$
+   $$\text{Total Application Read Passes} = 2 \times 728 = 1,456\text{ operations} \implies 72,800,000\text{ bytes (69.43 MB)}$$
+3. **Accounting Artifact:** Every run produces `bytes_read.json` recording unique files, unique bytes, pass-level reads, total application bytes, and per-file byte counts and SHA-256 digests.
 
 ---
 
 ## 8. Evidentiary Packaging & Command-Bound Logging (B-W1, B-W3 Resolution)
 
-Official execution must be launched via the frozen execution wrapper `runner.sh`, which enforces clean working tree state, verifies `git rev-parse HEAD == PREREG_SHA_v4`, captures literal standard output and error streams outside the tree during execution, and packages the complete 11-artifact evidence suite:
+Official execution must be launched via the frozen execution wrapper `runner.sh`, which creates `$RUN_EVIDENCE_DIR` early, enforces clean working tree state, verifies `git rev-parse HEAD == PREREG_SHA_v4`, captures literal standard output and error streams outside the tree during execution, records concrete executed commands, and packages the complete evidence suite:
 
+### Required Core Package (11 Artifacts):
 1. `command.sh`
 2. `stdout.log`
 3. `stderr.log`
@@ -151,7 +153,11 @@ Official execution must be launched via the frozen execution wrapper `runner.sh`
 10. `summary.json`
 11. `bytes_read.json`
 
-For recreation runs (`run-003-recreation`), `recreation_comparison.json` is generated to certify exact scientific parity with `run-002-confirmatory`.
+### Additional Produced Artifacts:
+- `manifest.sha256`
+- `recreation_comparison.json` (for recreation runs comparing against baseline `run-002-confirmatory`).
+
+`outputs.sha256` must cryptographically cover every produced file in `evidence/runs/<RUN_ID>/`.
 
 ---
 

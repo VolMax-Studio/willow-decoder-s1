@@ -31,6 +31,9 @@ fi
 TMP_DIR="$(mktemp -d /tmp/willow_exec_XXXXXX)"
 RUN_EVIDENCE_DIR="$REPO_ROOT/evidence/runs/$RUN_ID"
 
+# Ensure evidence directory exists early to preserve logs even on early Python halt (W-3)
+mkdir -p "$RUN_EVIDENCE_DIR"
+
 echo "[runner.sh] Starting execution for $RUN_ID under PREREG_SHA $PREREG_SHA..."
 
 # Execute reproduce.py with external log redirection
@@ -39,11 +42,14 @@ python3 reproduce.py --run-id "$RUN_ID" --prereg-sha "$PREREG_SHA" > "$TMP_DIR/s
 
 echo "$EXIT_CODE" > "$TMP_DIR/exit_code.txt"
 
-# Record environment and command
-cat << 'CMD_EOF' > "$TMP_DIR/command.sh"
+# Record concrete executed command with expanded variables
+cat << CMD_EOF > "$TMP_DIR/command.sh"
 #!/usr/bin/env bash
-# Command executed for run
-python3 reproduce.py --run-id "$1" --prereg-sha "$2"
+# Concrete execution command
+./runner.sh $RUN_ID $PREREG_SHA
+
+# Child command invoked by runner.sh:
+python3 reproduce.py --run-id $RUN_ID --prereg-sha $PREREG_SHA
 CMD_EOF
 chmod +x "$TMP_DIR/command.sh"
 
