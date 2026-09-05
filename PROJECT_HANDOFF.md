@@ -5,15 +5,15 @@
 Project: willow-decoder-s1
 Repository: VolMax-Studio/willow-decoder-s1
 Branch: instances/willow-decoder-s1
-Current commit: Pending draft v4 commit
-Preregistration commit: Pending Gate pass and Operator freeze (PREREG_SHA_v4)
+Current commit: 5320cc43456169bf55a4b599adf8a3995a4e6172
+Preregistration commit: 5320cc43456169bf55a4b599adf8a3995a4e6172
 Latest run ID: run-002-confirmatory (Non-Ratifiable per FAILURES #002 / B-W1)
-Next run ID: run-003-recreation (NOT YET AUTHORIZED)
+Next run ID: run-003-recreation (AUTHORIZED)
 Deadline: 2026-09-12
 
 ## Phase
 
-Specification Draft v4 (PRE-EXECUTION GATE DRAFT) — Execution State: NOT AUTHORIZED
+Frozen Specification v4 (FROZEN PRE-REGISTRATION) — Execution State: READY_FOR_EXECUTION
 
 Portfolio status: ACTIVE / DEADLINE PRIORITY
 
@@ -41,15 +41,17 @@ Public artifacts:
 
 - run-001: Classified as `Exploratory (not pre-registered)` per FAILURES #001 due to execution preceding git freeze commit.
 - run-002-confirmatory: Scientific computation verified ($\varepsilon_7 = 1.7113 \times 10^{-3}$, $\Lambda = 2.0383$, Target B disposition confirmed), but classified as non-ratifiable due to missing literal stdout/stderr stream logs per FAILURES #002 (B-W1).
-- run-003-recreation: Awaiting pre-execution Gate review of Draft v4 to recreate scientific outputs with full 11-artifact command-bound evidence package.
+- run-003-recreation: Authorized for execution under PREREG_SHA_v4 to recreate scientific outputs with full 11-artifact command-bound evidence package.
 
 ## Gate status
 
 Gate model/person: Claude
-Gate outcome: PENDING PRE-EXECUTION GATE REVIEW (Draft v4)
+Gate subject: d42f9996b7da13eb80c88dd83918b9b47e583c92
+Gate outcome: GATE_PASS (v4 specification and runner.sh accepted)
+Accepted by: Ivan (Operator)
 Blocking findings:
 None.
 
 ## Next single action
 
-Submit Draft v4 commit to Claude for pre-execution Gate review.
+Execute run-003-recreation via runner.sh under PREREG_SHA_v4.
