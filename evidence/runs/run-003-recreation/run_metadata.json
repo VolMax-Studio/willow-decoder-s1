@@ -1,0 +1,16 @@
+{
+  "run_id": "run-003-recreation",
+  "prereg_sha": "6daa877b181aa6ca09900589218eac2d1e8a5282",
+  "repository": "VolMax-Studio/willow-decoder-s1",
+  "branch": "instances/willow-decoder-s1",
+  "t_run_start_utc": "2026-09-05T13:27:41.217400+00:00",
+  "t_run_end_utc": "2026-09-05T13:27:41.315234+00:00",
+  "dataset_doi": "10.5281/zenodo.13273331",
+  "archive_md5": "21fa6ad35b395d838ebcdbc92e364a12",
+  "manifest_sha256": "e6fd2da6d0e9f59238ac0c4a306947edee2e569dd4755d8dab3a92536fd89dc4",
+  "unique_input_files": 728,
+  "unique_input_bytes": 36400000,
+  "total_file_read_operations": 1456,
+  "total_application_bytes_read": 72800000,
+  "exit_code": 0
+}

@@ -1,0 +1,12 @@
+================================================================================
+willow-decoder-s1 — AUDIT EXECUTION SUMMARY (run-003-recreation)
+================================================================================
+PREREG_SHA:                6daa877b181aa6ca09900589218eac2d1e8a5282
+G0 Provenance & Lineage:   PASSED (Zenodo 10.5281/zenodo.13273331, 728/728 members verified)
+G0 Byte Accounting:        PASSED (36400000 unique bytes across 728 files; 72800000 total app bytes read across 1456 read ops; 50k shots verified)
+G1 Population (P1):        PASSED (N_Libra = 364 derived dynamically)
+G2 Target B Archive Scope: PASSED (9,959 members evaluated -> NO_EXPLICIT_NEURAL_PIPELINE_OR_WEIGHT_ARTIFACT_IDENTIFIED_IN_ARCHIVE_INVENTORY)
+G3 Target A1 (eps_7):      1.7113e-3 vs 1.71e-3 [|Δ|=1.35e-06 <= 5.00e-06] -> VERIFIED
+G3 Target A2 (Lambda):     2.0383 vs 2.04 [|Δ|=0.0017 <= 0.0050] -> VERIFIED
+================================================================================
+Artifacts written to /home/volmax-studio/volmax-projects/iot2/PORTFOLIO/willow-decoder-s1/evidence/runs/run-003-recreation

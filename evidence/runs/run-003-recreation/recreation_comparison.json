@@ -1,0 +1,57 @@
+{
+  "all_scientific_payloads_match": true,
+  "baseline_run_id": "run-002-confirmatory",
+  "comparisons": {
+    "Lambda_value": {
+      "baseline_value": 2.038282091967165,
+      "recreation_value": 2.038282091967165,
+      "status": "SAME"
+    },
+    "Target_A1_verdict": {
+      "baseline_value": "VERIFIED (recomputed value satisfies R1 tolerance)",
+      "recreation_value": "VERIFIED (recomputed value satisfies R1 tolerance)",
+      "status": "SAME"
+    },
+    "Target_A2_verdict": {
+      "baseline_value": "VERIFIED (recomputed value satisfies R1 tolerance)",
+      "recreation_value": "VERIFIED (recomputed value satisfies R1 tolerance)",
+      "status": "SAME"
+    },
+    "Target_B_disposition": {
+      "baseline_value": "NO_EXPLICIT_NEURAL_PIPELINE_OR_WEIGHT_ARTIFACT_IDENTIFIED_IN_ARCHIVE_INVENTORY",
+      "recreation_value": "NO_EXPLICIT_NEURAL_PIPELINE_OR_WEIGHT_ARTIFACT_IDENTIFIED_IN_ARCHIVE_INVENTORY",
+      "status": "SAME"
+    },
+    "derived_N_Libra": {
+      "baseline_value": 364,
+      "recreation_value": 364,
+      "status": "SAME"
+    },
+    "eps_3_value": {
+      "baseline_value": 0.007116223473678577,
+      "recreation_value": 0.007116223473678577,
+      "status": "SAME"
+    },
+    "eps_5_value": {
+      "baseline_value": 0.0034942598762164323,
+      "recreation_value": 0.0034942598762164323,
+      "status": "SAME"
+    },
+    "eps_7_value": {
+      "baseline_value": 0.0017113465352358304,
+      "recreation_value": 0.0017113465352358304,
+      "status": "SAME"
+    },
+    "total_experiments_evaluated": {
+      "baseline_value": 364,
+      "recreation_value": 364,
+      "status": "SAME"
+    },
+    "total_series_evaluated": {
+      "baseline_value": 28,
+      "recreation_value": 28,
+      "status": "SAME"
+    }
+  },
+  "recreation_run_id": "run-003-recreation"
+}
