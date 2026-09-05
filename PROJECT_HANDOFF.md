@@ -5,15 +5,15 @@
 Project: willow-decoder-s1
 Repository: VolMax-Studio/willow-decoder-s1
 Branch: instances/willow-decoder-s1
-Current commit: 4eef577f9ba5b849adaba8aac53471e56d313443
-Preregistration commit: 4eef577f9ba5b849adaba8aac53471e56d313443
-Latest run ID: run-001 (Exploratory / Protocol Non-Compliance per FAILURES #001)
-Next run ID: run-002-confirmatory (AUTHORIZED)
+Current commit: Pending post-execution update
+Preregistration commit: d16cfac78cb2d6777fb026c60a2488956c88e704 (PREREG_SHA_v3)
+Latest run ID: run-002-confirmatory (COMPLETED CONFIRMATORY)
+Next run ID: None (Awaiting Post-Execution Review & Ratification)
 Deadline: 2026-09-12
 
 ## Phase
 
-Frozen Specification v3 (FROZEN PRE-REGISTRATION) — Execution State: READY_FOR_EXECUTION
+Post-Execution Review — Execution State: POST_EXECUTION_REVIEW
 
 Portfolio status: ACTIVE / DEADLINE PRIORITY
 
@@ -40,17 +40,18 @@ Public artifacts:
 ## Current results
 
 - run-001: Classified as `Exploratory (not pre-registered)` per FAILURES #001 due to execution preceding git freeze commit.
-- run-002-confirmatory: Authorized for execution under PREREG_SHA_v3.
+- run-002-confirmatory: Successfully executed under frozen PREREG_SHA_v3 `d16cfac78cb2d6777fb026c60a2488956c88e704`.
+  - Target A1 ($\varepsilon_7$): Recomputed $\varepsilon_7 = 1.7113 \times 10^{-3}$ vs reference $1.71 \times 10^{-3}$ ($|\Delta| = 1.35 \times 10^{-6} \le 5.00 \times 10^{-6}$) $\rightarrow$ **`VERIFIED`**.
+  - Target A2 ($\Lambda$): Recomputed $\Lambda = 2.0383$ vs reference $2.04$ ($|\Delta| = 0.0017 \le 0.0050$) $\rightarrow$ **`VERIFIED`**.
+  - Target B (Archive Scope): 0 neural/weight artifacts found across 9,959 members $\rightarrow$ **`NOT DEMONSTRATED FROM DEPOSITED ARTIFACT ALONE`**.
 
 ## Gate status
 
 Gate model/person: Claude
-Gate subject: 71e5b8ca319a11edab30ab7d5d9885362c00cee4
-Gate outcome: GATE_PASS (v3 specification accepted)
+Pre-Execution Gate outcome: GATE_PASS (Draft v3 @ 71e5b8c)
 Accepted by: Ivan (Operator)
-Blocking findings:
-None.
+Post-Execution Gate outcome: PENDING POST-EXECUTION REVIEW
 
 ## Next single action
 
-Execute run-002-confirmatory via reproduce.py with pinned PREREG_SHA_v3.
+Submit post-execution Gate review packet to Claude for final review and ratification.
