@@ -5,15 +5,15 @@
 Project: willow-decoder-s1
 Repository: VolMax-Studio/willow-decoder-s1
 Branch: instances/willow-decoder-s1
-Current commit: Pending post-execution update
-Preregistration commit: d16cfac78cb2d6777fb026c60a2488956c88e704 (PREREG_SHA_v3)
-Latest run ID: run-002-confirmatory (COMPLETED CONFIRMATORY)
-Next run ID: None (Awaiting Post-Execution Review & Ratification)
+Current commit: Pending draft v4 commit
+Preregistration commit: Pending Gate pass and Operator freeze (PREREG_SHA_v4)
+Latest run ID: run-002-confirmatory (Non-Ratifiable per FAILURES #002 / B-W1)
+Next run ID: run-003-recreation (NOT YET AUTHORIZED)
 Deadline: 2026-09-12
 
 ## Phase
 
-Post-Execution Review — Execution State: POST_EXECUTION_REVIEW
+Specification Draft v4 (PRE-EXECUTION GATE DRAFT) — Execution State: NOT AUTHORIZED
 
 Portfolio status: ACTIVE / DEADLINE PRIORITY
 
@@ -40,18 +40,16 @@ Public artifacts:
 ## Current results
 
 - run-001: Classified as `Exploratory (not pre-registered)` per FAILURES #001 due to execution preceding git freeze commit.
-- run-002-confirmatory: Successfully executed under frozen PREREG_SHA_v3 `d16cfac78cb2d6777fb026c60a2488956c88e704`.
-  - Target A1 ($\varepsilon_7$): Recomputed $\varepsilon_7 = 1.7113 \times 10^{-3}$ vs reference $1.71 \times 10^{-3}$ ($|\Delta| = 1.35 \times 10^{-6} \le 5.00 \times 10^{-6}$) $\rightarrow$ **`VERIFIED`**.
-  - Target A2 ($\Lambda$): Recomputed $\Lambda = 2.0383$ vs reference $2.04$ ($|\Delta| = 0.0017 \le 0.0050$) $\rightarrow$ **`VERIFIED`**.
-  - Target B (Archive Scope): 0 neural/weight artifacts found across 9,959 members $\rightarrow$ **`NOT DEMONSTRATED FROM DEPOSITED ARTIFACT ALONE`**.
+- run-002-confirmatory: Scientific computation verified ($\varepsilon_7 = 1.7113 \times 10^{-3}$, $\Lambda = 2.0383$, Target B disposition confirmed), but classified as non-ratifiable due to missing literal stdout/stderr stream logs per FAILURES #002 (B-W1).
+- run-003-recreation: Awaiting pre-execution Gate review of Draft v4 to recreate scientific outputs with full 11-artifact command-bound evidence package.
 
 ## Gate status
 
 Gate model/person: Claude
-Pre-Execution Gate outcome: GATE_PASS (Draft v3 @ 71e5b8c)
-Accepted by: Ivan (Operator)
-Post-Execution Gate outcome: PENDING POST-EXECUTION REVIEW
+Gate outcome: PENDING PRE-EXECUTION GATE REVIEW (Draft v4)
+Blocking findings:
+None.
 
 ## Next single action
 
-Submit post-execution Gate review packet to Claude for final review and ratification.
+Submit Draft v4 commit to Claude for pre-execution Gate review.

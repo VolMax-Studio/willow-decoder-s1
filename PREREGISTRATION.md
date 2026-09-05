@@ -1,31 +1,27 @@
-# Willow Decoder Audit — Pre-registration v3
+# Willow Decoder Audit — Pre-registration v4
 
 **Instance:** `willow-decoder-s1`  
-**Phase:** Specification Draft v3 (PRE-EXECUTION GATE DRAFT)  
-**Target Run:** `run-002-confirmatory`  
+**Phase:** Specification Draft v4 (PRE-EXECUTION GATE DRAFT)  
+**Target Run:** `run-003-recreation`  
 **Audit Object:** Zenodo `10.5281/zenodo.13273331` (`google_105Q_surface_code_d3_d5_d7.zip`, MD5: `21fa6ad35b395d838ebcdbc92e364a12`)
 
 ---
 
 ## 1. Prior Exposure & Lineage Disclosure
 
-This pre-registration v3 incorporates full prior exposure disclosure per P10 governance standards:
+This pre-registration v4 incorporates full prior exposure disclosure per P10 governance standards:
 
 1. **Exploratory Run Lineage (`FAILURES #001`):** An exploratory execution (`run-001`) was performed prior to the formal preregistration freeze commit. Per `FAILURES #001`, `run-001` is classified as `Exploratory (not pre-registered)`.
-2. **Prior Numerical Observations from run-001:**
-   - Population count: $N_{\text{Libra}} = 364$ distinct experimental configurations.
-   - Matching-family Libra logical error rate for $d=7$: $\varepsilon_7 \approx 1.71 \times 10^{-3}$.
-   - Matching-family threshold scaling exponent: $\Lambda \approx 2.04$.
-3. **Prior Archive Inventory Observations (Claude Gate Review):**
-   - The complete public Zenodo archive contains **9,959 members** (verified via central directory parsing).
-   - The archive contains **five named decoder pipelines** under `decoding_results/`:
-     1. `correlated_matching_decoder_with_rl_optimized_prior`
-     2. `correlated_matching_decoder_with_si1000_prior`
-     3. `harmony_decoder_with_rl_optimized_prior`
-     4. `harmony_decoder_with_si1000_prior`
-     5. `libra_decoder_with_rl_optimized_prior`
-   - No explicitly named neural pipeline directory, model weight file, or neural prediction bitstream was identified in the archive inventory.
-4. **Target B Non-Outcome-Blind Status:** Because the archive inventory has already been inspected, Target B is evaluated as a pre-registered reproduction of the archive inventory finding, not a blinded discovery.
+2. **Confirmatory Run-002 Lineage & Evidentiary Remediation (`FAILURES #002`, `#003`, `#004`):**
+   - `run-002-confirmatory` was executed under frozen PREREG_SHA_v3 `d16cfac78cb2d6777fb026c60a2488956c88e704`.
+   - Scientific outputs were verified:
+     - Population count: $N_{\text{Libra}} = 364$ distinct experimental configurations.
+     - Matching-family Libra logical error rate for $d=7$: $\varepsilon_7 = 0.0017113465352358304$ (vs Nature published $1.71 \times 10^{-3}$, $|\Delta| = 1.35 \times 10^{-6} \le 5.00 \times 10^{-6}$).
+     - Matching-family threshold scaling exponent: $\Lambda = 2.038282091967165$ (vs Nature published $2.04$, $|\Delta| = 0.0017 \le 0.0050$).
+     - Complete archive scope evaluation: 0 matching neural/weight artifacts across 9,959 members.
+   - Per `FAILURES #002` (B-W1), `run-002-confirmatory` omitted command-bound stream logs (`stdout.log`, `stderr.log`, `command.sh`, `env.txt`), rendering it non-ratifiable.
+   - `run-003-recreation` is formally specified to recreate the verified scientific outputs while supplying the complete command-bound evidence package.
+3. **Target B Non-Outcome-Blind Status:** Because the archive inventory has already been inspected, Target B is evaluated as a pre-registered reproduction of the archive inventory finding, not a blinded discovery.
 
 ---
 
@@ -129,16 +125,43 @@ For each of the 28 series (14 patches $\times$ 2 bases):
 
 ---
 
-## 7. Execution Invariants & Evidence Packaging
+## 7. Byte Accounting & Shot Population Invariant (B-W2 Resolution)
 
-Official execution runner `reproduce.py` enforces:
-1. `git status --porcelain` is empty.
-2. `git rev-parse HEAD == PREREG_SHA`.
-3. `inputs.sha256` records:
-   - `PREREGISTRATION.md`
-   - `reproduce.py`
-   - `requirements-minimal.txt`
-   - `data_manifest.json`
-   - `SOURCE_MAPPING.json`
-   - `archive_inventory.json`
-4. All outputs recorded under `evidence/runs/<RUN_ID>/` with `outputs.sha256`.
+To ensure full accountability and eliminate runtime ambiguity:
+1. **Per-File Shot Invariant:** Every evaluated `.b8` file must contain exactly 50,000 bytes ($1$ byte per shot for $N_{\text{shots}} = 50,000$). Any deviation halts execution (`EXECUTION_STATE_INVALID`).
+2. **Global Input Byte Invariant:** Exactly 728 files must be read, accounting for exactly:
+   $$\text{Total Bytes Read} = 728 \times 50,000 = 36,400,000\text{ bytes (34.71 MB)}$$
+3. **Accounting Artifact:** Every run produces `bytes_read.json` recording total bytes, total files, and per-file byte counts and SHA-256 digests.
+
+---
+
+## 8. Evidentiary Packaging & Command-Bound Logging (B-W1, B-W3 Resolution)
+
+Official execution must be launched via the frozen execution wrapper `runner.sh`, which enforces clean working tree state, verifies `git rev-parse HEAD == PREREG_SHA_v4`, captures literal standard output and error streams outside the tree during execution, and packages the complete 11-artifact evidence suite:
+
+1. `command.sh`
+2. `stdout.log`
+3. `stderr.log`
+4. `exit_code.txt`
+5. `env.txt`
+6. `git_commit.txt`
+7. `inputs.sha256`
+8. `outputs.sha256`
+9. `run_metadata.json`
+10. `summary.json`
+11. `bytes_read.json`
+
+For recreation runs (`run-003-recreation`), `recreation_comparison.json` is generated to certify exact scientific parity with `run-002-confirmatory`.
+
+---
+
+## 9. Immutable Input Inventory (7 Pinned Files)
+
+`inputs.sha256` records the cryptographic digests of:
+1. `PREREGISTRATION.md`
+2. `reproduce.py`
+3. `runner.sh`
+4. `requirements-minimal.txt`
+5. `data_manifest.json`
+6. `SOURCE_MAPPING.json`
+7. `archive_inventory.json`
