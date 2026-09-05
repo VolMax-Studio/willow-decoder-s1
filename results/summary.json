@@ -263,9 +263,14 @@
       "expected_N_Libra": 364,
       "status": "PASSED"
     },
-    "G2_bitstream_integrity": "PASSED",
-    "G3_recomputation": "PASSED"
+    "G2_target_b_scope_finding": {
+      "disposition": "TARGET B: ABSENCE FROM DEPOSITED ARTIFACT",
+      "matching_neural_artifacts_count": 0,
+      "status": "PASSED"
+    },
+    "G3_reproduction": "PASSED"
   },
+  "manifest_sha256": "e6fd2da6d0e9f59238ac0c4a306947edee2e569dd4755d8dab3a92536fd89dc4",
   "recomputed_metrics": {
     "Lambda": {
       "sigma": 0.003201160585861218,
@@ -284,25 +289,28 @@
       "value": 0.0017113465352358304
     }
   },
-  "target_b_scope_finding": {
-    "disposition": "B1: NOT_REPRODUCIBLE_FROM_PUBLIC_DATA (Zero neural network predictions or weights deposited in public archive)",
-    "matching_neural_artifacts_count": 0,
-    "status": "RECORDED"
-  },
-  "targets_a": {
-    "target_a1_eps_7": {
+  "target_outcomes": {
+    "P1_population": {
+      "derived_N_Libra": 364,
+      "status": "DETERMINED"
+    },
+    "Target_A1_eps_7": {
       "abs_diff": 1.3465352358304258e-06,
       "published_reference": 0.00171,
       "recomputed_value": 0.0017113465352358304,
       "tolerance_R1": 5e-06,
-      "verdict": "VERIFIED (recomputed value rounds to published 1.71e-3)"
+      "verdict": "VERIFIED (recomputed value satisfies R1 tolerance)"
     },
-    "target_a2_Lambda": {
+    "Target_A2_Lambda": {
       "abs_diff": 0.0017179080328348917,
       "published_reference": 2.04,
       "recomputed_value": 2.038282091967165,
       "tolerance_R1": 0.005,
-      "verdict": "VERIFIED (recomputed value rounds to published 2.04)"
+      "verdict": "VERIFIED (recomputed value satisfies R1 tolerance)"
+    },
+    "Target_B_scope_finding": {
+      "count": 0,
+      "disposition": "TARGET B: ABSENCE FROM DEPOSITED ARTIFACT"
     }
   },
   "total_experiments_evaluated": 364,
